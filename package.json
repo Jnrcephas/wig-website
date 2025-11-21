@@ -1,0 +1,24 @@
+{
+    "name": "natishlux-frontend",
+    "version": "1.0.0",
+    "description": "Natishlux E-commerce Frontend",
+    "scripts": {
+      "dev": "vite",
+      "build": "vite build",
+      "preview": "vite preview"
+    },
+    "dependencies": {
+      "@reduxjs/toolkit": "^2.0.1",
+      "@tanstack/react-query": "^5.17.0",
+      "@stripe/stripe-js": "^2.4.0",
+      "axios": "^1.6.2",
+      "react": "^18.2.0",
+      "react-dom": "^18.2.0",
+      "react-redux": "^9.0.4",
+      "uuid": "^9.0.1"
+    },
+    "devDependencies": {
+      "@vitejs/plugin-react": "^4.2.1",
+      "vite": "^5.0.8"
+    }
+  }
