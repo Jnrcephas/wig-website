@@ -1,0 +1,993 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Categories — Natishlux Admin</title>
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f8f9fa;
+      --text: #111;
+      --muted: #666;
+      --accent: #000;
+      --gold: #e0245e;
+      --sidebar-width: 260px;
+      --header-height: 70px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Jost", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: var(--sidebar-width);
+      background: white;
+      border-right: 1px solid #e0e0e0;
+      padding: 24px 0;
+      z-index: 100;
+      transition: transform 0.3s;
+    }
+
+    .sidebar.mobile-hidden {
+      transform: translateX(-100%);
+    }
+
+    .sidebar-logo {
+      padding: 0 24px 24px;
+      border-bottom: 1px solid #e0e0e0;
+      margin-bottom: 24px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .logo-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-section {
+      padding: 0 16px;
+      margin-bottom: 24px;
+    }
+
+    .nav-section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 0 8px 8px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      color: var(--text);
+      text-decoration: none;
+      transition: background 0.2s;
+      margin-bottom: 4px;
+    }
+
+    .nav-item:hover {
+      background: #f5f5f5;
+    }
+
+    .nav-item.active {
+      background: var(--gold);
+      color: white;
+    }
+
+    .nav-icon {
+      font-size: 20px;
+    }
+
+    .header {
+      position: fixed;
+      left: var(--sidebar-width);
+      right: 0;
+      top: 0;
+      height: var(--header-height);
+      background: white;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 90;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .header-title {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: #f5f5f5;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 8px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      min-width: 200px;
+      display: none;
+      z-index: 1000;
+      border: 1px solid #e0e0e0;
+    }
+
+    .dropdown-menu.show {
+      display: block;
+    }
+
+    .dropdown-item {
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dropdown-item:hover {
+      background: #f5f5f5;
+    }
+
+    .main-content {
+      margin-left: var(--sidebar-width);
+      margin-top: var(--header-height);
+      padding: 32px;
+      min-height: calc(100vh - var(--header-height));
+    }
+
+    .section {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e0e0e0;
+      margin-bottom: 24px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: #f5f5f5;
+      color: var(--accent);
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 13px;
+    }
+
+    .btn-danger {
+      background: #e74c3c;
+    }
+
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .category-card {
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .category-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .category-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background: #f5f7fa;
+    }
+
+    .category-content {
+      padding: 16px;
+    }
+
+    .category-name {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .category-description {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 12px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .category-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .badge-success {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .badge-danger {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 12px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--muted);
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    .close-btn:hover {
+      background: #f5f5f5;
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 15px;
+      transition: border-color 0.2s;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .image-preview {
+      margin-top: 12px;
+      border-radius: 8px;
+      overflow: hidden;
+      display: none;
+    }
+
+    .image-preview img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+    }
+
+    .image-preview.show {
+      display: block;
+    }
+
+    .alert {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .alert-error {
+      background: #fee;
+      color: #e74c3c;
+      border: 1px solid #e74c3c;
+    }
+
+    .alert-success {
+      background: #efe;
+      color: #27ae60;
+      border: 1px solid #27ae60;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #333;
+      color: white;
+      padding: 16px 24px;
+      border-radius: 8px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: transform 0.3s, opacity 0.3s;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 1024px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.mobile-visible {
+        transform: translateX(0);
+      }
+
+      .header {
+        left: 0;
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .categories-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .main-content {
+        padding: 16px;
+      }
+
+      .categories-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+    }
+
+    .mobile-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 99;
+    }
+
+    .mobile-overlay.show {
+      display: block;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid var(--gold);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo">Natishlux</div>
+      <div class="logo-subtitle">
+        <i class="ri-shield-keyhole-line"></i>
+        Admin Portal
+      </div>
+    </div>
+
+    <nav>
+      <div class="nav-section">
+        <div class="nav-section-title">Main</div>
+        <a href="admin-dashboard.html" class="nav-item">
+          <i class="nav-icon ri-dashboard-line"></i>
+          <span>Dashboard</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Management</div>
+        <a href="admin-categories.html" class="nav-item active">
+          <i class="nav-icon ri-folder-line"></i>
+          <span>Categories</span>
+        </a>
+        <a href="admin-products.html" class="nav-item">
+          <i class="nav-icon ri-shopping-bag-line"></i>
+          <span>Products</span>
+        </a>
+        <a href="admin-orders.html" class="nav-item">
+          <i class="nav-icon ri-file-list-3-line"></i>
+          <span>Orders</span>
+        </a>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+
+  <header class="header">
+    <div class="header-left">
+      <button class="menu-toggle" id="menuToggle">
+        <i class="ri-menu-line"></i>
+      </button>
+      <h1 class="header-title">Categories</h1>
+    </div>
+
+    <div class="header-right">
+      <div class="user-menu" id="userMenu">
+        <div class="user-avatar" id="userAvatar">A</div>
+        <div>
+          <div style="font-weight: 600; font-size: 14px;" id="userName">Admin</div>
+          <!-- <div style="font-size: 12px; color: var(--muted);">Administrator</div> -->
+        </div>
+        <i class="ri-arrow-down-s-line"></i>
+
+        <div class="dropdown-menu" id="dropdownMenu">
+          <div class="dropdown-item" id="logoutBtn">
+            <i class="ri-logout-box-line"></i>
+            <span>Logout</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">All Categories</h2>
+        <button class="btn" id="addCategoryBtn">
+          <i class="ri-add-line"></i>
+          Add Category
+        </button>
+      </div>
+
+      <div id="loadingState" class="loading">
+        <div class="spinner"></div>
+        <p>Loading categories...</p>
+      </div>
+
+      <div id="categoriesContainer" class="categories-grid" style="display: none;">
+      </div>
+
+      <div id="emptyState" class="loading" style="display: none;">
+        <i class="ri-folder-line" style="font-size: 48px; color: #ddd; margin-bottom: 16px;"></i>
+        <p>No categories found</p>
+        <button class="btn" onclick="document.getElementById('addCategoryBtn').click()" style="margin-top: 16px;">
+          <i class="ri-add-line"></i>
+          Add First Category
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <div class="modal" id="categoryModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalTitle">Add Category</h3>
+        <button class="close-btn" id="closeModal">
+          <i class="ri-close-line"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div id="modalAlert" style="display: none;" class="alert"></div>
+
+        <form id="categoryForm">
+          <input type="hidden" id="categoryId">
+
+          <div class="form-group">
+            <label for="categoryName">Category Name *</label>
+            <input type="text" id="categoryName" class="form-control" required maxlength="100" placeholder="Enter category name">
+          </div>
+
+          <div class="form-group">
+            <label for="categoryDescription">Description *</label>
+            <textarea id="categoryDescription" class="form-control" required maxlength="500" placeholder="Enter category description"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="categoryImage">Category Image *</label>
+            <input type="file" id="categoryImage" class="form-control" accept="image/*">
+            <div class="image-preview" id="imagePreview">
+              <img id="previewImg" src="" alt="Preview">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="checkbox" id="isActive" checked>
+              <span>Active</span>
+            </label>
+          </div>
+
+          <div style="display: flex; gap: 12px; justify-content: flex-end;">
+            <button type="button" class="btn btn-secondary" id="cancelBtn">
+              <i class="ri-close-line"></i>
+              Cancel
+            </button>
+            <button type="submit" class="btn" id="submitBtn">
+              <span id="submitText">
+                <i class="ri-save-line"></i>
+                Save Category
+              </span>
+              <span id="submitSpinner" style="display: none;">
+                <i class="ri-loader-4-line"></i>
+                Saving...
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script type="module">
+    import { categoryAPI } from '../src/services/apiMethods.js';
+
+    const token = localStorage.getItem('adminAccessToken');
+    if (!token) {
+      window.location.href = 'admin-login.html';
+    }
+
+    const adminUser = JSON.parse(localStorage.getItem('adminUser') || '{}');
+    if (adminUser.name) {
+      document.getElementById('userName').textContent = adminUser.name;
+      document.getElementById('userAvatar').textContent = adminUser.name.charAt(0).toUpperCase();
+    }
+
+    const sidebar = document.getElementById('sidebar');
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileOverlay = document.getElementById('mobileOverlay');
+
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('mobile-visible');
+      mobileOverlay.classList.toggle('show');
+    });
+
+    mobileOverlay.addEventListener('click', () => {
+      sidebar.classList.remove('mobile-visible');
+      mobileOverlay.classList.remove('show');
+    });
+
+    const userMenu = document.getElementById('userMenu');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+
+    userMenu.addEventListener('click', (e) => {
+      if (e.target.closest('.dropdown-menu')) return;
+      dropdownMenu.classList.toggle('show');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!userMenu.contains(e.target)) {
+        dropdownMenu.classList.remove('show');
+      }
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('adminAccessToken');
+      localStorage.removeItem('adminRefreshToken');
+      localStorage.removeItem('adminUser');
+      window.location.href = 'admin-login.html';
+    });
+
+    let categories = [];
+    let currentCategory = null;
+    let currentImageBase64 = null;
+
+    async function loadCategories() {
+      try {
+        document.getElementById('loadingState').style.display = 'block';
+        document.getElementById('categoriesContainer').style.display = 'none';
+        document.getElementById('emptyState').style.display = 'none';
+
+        const response = await categoryAPI.getAll();
+        categories = response.data.data || [];
+
+        document.getElementById('loadingState').style.display = 'none';
+
+        if (categories.length === 0) {
+          document.getElementById('emptyState').style.display = 'block';
+        } else {
+          document.getElementById('categoriesContainer').style.display = 'grid';
+          renderCategories();
+        }
+      } catch (error) {
+        console.error('Failed to load categories:', error);
+        showToast('Failed to load categories', 'error');
+        document.getElementById('loadingState').style.display = 'none';
+      }
+    }
+
+    function renderCategories() {
+      const container = document.getElementById('categoriesContainer');
+      container.innerHTML = categories.map(category => `
+        <div class="category-card">
+          <img src="${category.imageUrl}" alt="${category.name}" class="category-image" 
+               onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22200%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22300%22 height=%22200%22/%3E%3Ctext fill=%22%23999%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-family=%22sans-serif%22%3E${category.name}%3C/text%3E%3C/svg%3E'">
+          <div class="category-content">
+            <span class="badge ${category.isActive ? 'badge-success' : 'badge-danger'}">
+              ${category.isActive ? 'Active' : 'Inactive'}
+            </span>
+            <div class="category-name">${category.name}</div>
+            <div class="category-description">${category.description}</div>
+            <div class="category-actions">
+              <button class="btn btn-sm btn-secondary" onclick="editCategory('${category.id}')">
+                <i class="ri-edit-line"></i>
+                Edit
+              </button>
+              <button class="btn btn-sm btn-danger" onclick="deleteCategory('${category.id}')">
+                <i class="ri-delete-bin-line"></i>
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    const modal = document.getElementById('categoryModal');
+    const categoryForm = document.getElementById('categoryForm');
+
+    document.getElementById('addCategoryBtn').addEventListener('click', () => {
+      currentCategory = null;
+      currentImageBase64 = null;
+      document.getElementById('modalTitle').textContent = 'Add Category';
+      categoryForm.reset();
+      document.getElementById('categoryId').value = '';
+      document.getElementById('imagePreview').classList.remove('show');
+      document.getElementById('categoryImage').required = true;
+      modal.classList.add('show');
+    });
+
+    document.getElementById('closeModal').addEventListener('click', () => {
+      modal.classList.remove('show');
+    });
+
+    document.getElementById('cancelBtn').addEventListener('click', () => {
+      modal.classList.remove('show');
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('show');
+      }
+    });
+
+    window.editCategory = (id) => {
+      currentCategory = categories.find(c => c.id === id);
+      if (!currentCategory) return;
+
+      document.getElementById('modalTitle').textContent = 'Edit Category';
+      document.getElementById('categoryId').value = currentCategory.id;
+      document.getElementById('categoryName').value = currentCategory.name;
+      document.getElementById('categoryDescription').value = currentCategory.description;
+      document.getElementById('isActive').checked = currentCategory.isActive;
+      document.getElementById('categoryImage').required = false;
+
+      if (currentCategory.imageUrl) {
+        document.getElementById('previewImg').src = currentCategory.imageUrl;
+        document.getElementById('imagePreview').classList.add('show');
+      }
+
+      modal.classList.add('show');
+    };
+
+    window.deleteCategory = async (id) => {
+      if (!confirm('Are you sure you want to delete this category?')) return;
+
+      try {
+        await categoryAPI.delete(id);
+        showToast('Category deleted successfully', 'success');
+        loadCategories();
+      } catch (error) {
+        console.error('Failed to delete category:', error);
+        showToast('Failed to delete category', 'error');
+      }
+    };
+
+    document.getElementById('categoryImage').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        currentImageBase64 = event.target.result;
+        document.getElementById('previewImg').src = currentImageBase64;
+        document.getElementById('imagePreview').classList.add('show');
+      };
+      reader.readAsDataURL(file);
+    });
+
+    categoryForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const id = document.getElementById('categoryId').value;
+      const name = document.getElementById('categoryName').value.trim();
+      const description = document.getElementById('categoryDescription').value.trim();
+      const isActive = document.getElementById('isActive').checked;
+
+      if (!name || !description) {
+        showModalAlert('Please fill in all required fields', 'error');
+        return;
+      }
+
+      if (!id && !currentImageBase64) {
+        showModalAlert('Please select an image', 'error');
+        return;
+      }
+
+      const submitBtn = document.getElementById('submitBtn');
+      const submitText = document.getElementById('submitText');
+      const submitSpinner = document.getElementById('submitSpinner');
+
+      try {
+        submitBtn.disabled = true;
+        submitText.style.display = 'none';
+        submitSpinner.style.display = 'inline-flex';
+
+        const data = { name, description, isActive };
+
+        if (currentImageBase64) {
+          data.imageBase64 = currentImageBase64;
+        }
+
+        if (id) {
+          await categoryAPI.update(id, data);
+          showToast('Category updated successfully', 'success');
+        } else {
+          await categoryAPI.create(data);
+          showToast('Category created successfully', 'success');
+        }
+
+        modal.classList.remove('show');
+        loadCategories();
+
+      } catch (error) {
+        console.error('Failed to save category:', error);
+        showModalAlert(error.response?.data?.message || 'Failed to save category', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitText.style.display = 'inline-flex';
+        submitSpinner.style.display = 'none';
+      }
+    });
+
+    function showToast(message, type = 'info') {
+      const toast = document.getElementById('toast');
+      const icon = type === 'error' ? '<i class="ri-error-warning-line"></i>' : '<i class="ri-checkbox-circle-line"></i>';
+      toast.innerHTML = icon + message;
+      toast.style.background = type === 'error' ? '#e74c3c' : '#27ae60';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    function showModalAlert(message, type = 'error') {
+      const alert = document.getElementById('modalAlert');
+      const icon = type === 'error' ? '<i class="ri-error-warning-line"></i>' : '<i class="ri-checkbox-circle-line"></i>';
+      alert.innerHTML = icon + message;
+      alert.className = `alert alert-${type}`;
+      alert.style.display = 'flex';
+      
+      setTimeout(() => {
+        alert.style.display = 'none';
+      }, 5000);
+    }
+
+    loadCategories();
+  </script>
+</body>
+
+</html>

@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -9,414 +10,597 @@
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    :root{
-      --bg:#fff;
-      --text:#111;
-      --muted:#666;
-      --accent:#000;
-      --gold:#d4af37;
-      --container:1200px;
-      --gap:24px;
-      --radius:10px;
-      --fw-regular:400;
-      --fw-medium:600;
+    :root {
+      --bg: #fff;
+      --text: #111;
+      --muted: #666;
+      --accent: #000;
+      --gold: #e0245e;
+      --container: 1200px;
+      --gap: 24px;
+      --radius: 10px;
+      --fw-regular: 400;
+      --fw-medium: 600;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:"Jost",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-      color:var(--text);
-      background:var(--bg);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      line-height:1.45;
-    }
-    a{color:inherit;text-decoration:none}
-    img{max-width:100%;display:block;height:auto}
 
-    .container{max-width:var(--container);margin:0 auto;padding:0 20px}
-    header{
-      border-bottom:1px solid #eee;
-      background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.9));
-      position:sticky;top:0;z-index:50;backdrop-filter:saturate(120%) blur(6px);
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    .nav{
-      display:flex;align-items:center;justify-content:space-between;padding:18px 0;
-    }
-    .logo{font-weight:700;letter-spacing:.3px;font-size:20px}
-    .nav-right{display:flex;gap:12px;align-items:center}
-    .nav-links{display:flex;gap:18px;align-items:center}
-    .btn{background:var(--accent);color:#fff;padding:10px 16px;border-radius:8px;font-weight:var(--fw-medium);border:none;cursor:pointer;transition:transform .18s,box-shadow .18s}
-    .btn:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 12px 28px rgba(0,0,0,0.10)}
-    .btn:disabled{opacity:0.6;cursor:not-allowed;transform:none}
-    .icon-btn{background:transparent;border:1px solid #eee;padding:8px;border-radius:8px;cursor:pointer;font-size:18px;transition:transform .18s,background .18s}
-    .icon-btn:hover{transform:translateY(-3px);background:rgba(0,0,0,0.03)}
 
-    .menu-toggle{display:none}
-    @media (max-width:900px){
-      .nav-links{
-        display:none;
-        position:absolute;
-        top:100%;
-        left:0;
-        right:0;
-        background:#fff;
-        flex-direction:column;
-        padding:20px;
-        box-shadow:0 8px 16px rgba(0,0,0,0.1);
-        gap:12px;
+    html,
+    body {
+      min-height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Jost", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.45;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+      height: auto;
+    }
+
+    .container {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ===== HEADER STYLES ===== */
+    header {
+      border-bottom: 1px solid #eee;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: saturate(120%) blur(6px);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 0;
+      gap: 20px;
+    }
+
+    .logo {
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      font-size: 20px;
+      flex-shrink: 0;
+      transition: color 0.2s ease;
+    }
+
+    .logo:hover {
+      color: var(--gold);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      margin: 0 auto;
+      /* Center the nav links */
+    }
+
+    .nav-links a {
+      transition: color 0.18s ease, transform 0.18s ease;
+      font-weight: 500;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    .nav-right {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: var(--fw-medium);
+      border: none;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s;
+      font-family: inherit;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .icon-btn {
+      background: transparent;
+      border: 1px solid #eee;
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: transform 0.18s, background 0.18s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .icon-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(0, 0, 0, 0.03);
+      border-color: #ddd;
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 20px;
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: var(--gold);
+      color: #fff;
+      border-radius: 10px;
+      padding: 2px 6px;
+      font-size: 11px;
+      font-weight: 600;
+      min-width: 18px;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    /* ===== MOBILE STYLES ===== */
+    @media (max-width: 900px) {
+      .nav {
+        position: relative;
+        padding: 16px 0;
+        margin-top: 20px;
+        margin-bottom: 20px;
       }
-      .nav-links.active{display:flex}
-      .menu-toggle{display:inline-flex}
+
+      .container {
+        padding: 0 16px;
+        /* Increase horizontal padding on mobile */
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #fff;
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        gap: 0;
+        margin: 0;
+        z-index: 100;
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 12px 16px;
+        width: 100%;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .nav-links a:last-child {
+        border-bottom: none;
+      }
+
+      .menu-toggle {
+        display: inline-flex;
+      }
     }
 
-    .nav-links a:hover{color:var(--accent);transform:translateY(-2px);text-decoration:underline}
+    /* ===== REST OF YOUR PAGE-SPECIFIC STYLES GO HERE ===== */
+
+    /* Ensure nav links are clickable on mobile */
+    .nav-links a {
+      display: block;
+      padding: 8px 0;
+      width: 100%;
+    }
+
 
     /* Page Header */
-    .page-header{
-      text-align:center;
-      padding:64px 0 48px;
-      background:linear-gradient(180deg, #fafafa, #fff);
+    .page-header {
+      text-align: center;
+      padding: 64px 0 48px;
+      background: linear-gradient(180deg, #fafafa, #fff);
     }
-    .page-header h1{
-      font-size:clamp(36px,6vw,56px);
-      margin:0 0 16px;
-      color:var(--gold);
-      font-weight:700;
+
+    .page-header h1 {
+      font-size: clamp(36px, 6vw, 56px);
+      margin: 0 0 16px;
+      color: var(--gold);
+      font-weight: 700;
     }
-    .page-header p{
-      font-size:clamp(16px,2vw,20px);
-      color:var(--muted);
-      max-width:700px;
-      margin:0 auto;
-      line-height:1.6;
+
+    .page-header p {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--muted);
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.6;
     }
 
     /* Contact Container */
-    .contact-container{
-      max-width:1200px;
-      margin:0 auto;
-      padding:64px 20px;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:64px;
+    .contact-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 64px 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
     }
 
     /* Contact Info */
-    .contact-info h2{
-      font-size:clamp(28px,4vw,36px);
-      margin:0 0 24px;
-      font-weight:700;
-      color:var(--accent);
-    }
-    .contact-info p{
-      color:var(--muted);
-      line-height:1.7;
-      margin-bottom:32px;
+    .contact-info h2 {
+      font-size: clamp(28px, 4vw, 36px);
+      margin: 0 0 24px;
+      font-weight: 700;
+      color: var(--accent);
     }
 
-    .info-items{
-      display:flex;
-      flex-direction:column;
-      gap:24px;
+    .contact-info p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 32px;
     }
-    .info-item{
-      display:flex;
-      gap:16px;
-      align-items:start;
+
+    .info-items {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
     }
-    .info-icon{
-      width:48px;
-      height:48px;
-      background:#fff;
-      border:1px solid #eee;
-      border-radius:12px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:24px;
-      flex-shrink:0;
+
+    .info-item {
+      display: flex;
+      gap: 16px;
+      align-items: start;
     }
-    .info-content h3{
-      font-size:18px;
-      margin:0 0 6px;
-      font-weight:600;
-      color:var(--accent);
+
+    .info-icon {
+      width: 48px;
+      height: 48px;
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
     }
-    .info-content p{
-      margin:0;
-      color:var(--muted);
+
+    .info-content h3 {
+      font-size: 18px;
+      margin: 0 0 6px;
+      font-weight: 600;
+      color: var(--accent);
     }
-    .info-content a{
-      color:var(--gold);
-      text-decoration:none;
-      font-weight:500;
+
+    .info-content p {
+      margin: 0;
+      color: var(--muted);
     }
-    .info-content a:hover{
-      text-decoration:underline;
+
+    .info-content a {
+      color: var(--gold);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .info-content a:hover {
+      text-decoration: underline;
     }
 
     /* Social Links */
-    .social-links{
-      display:flex;
-      gap:12px;
-      margin-top:32px;
+    .social-links {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
     }
-    .social-btn{
-      width:48px;
-      height:48px;
-      border-radius:50%;
-      background:#f5f5f5;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:24px;
-      transition:transform .2s,background .2s;
-      cursor:pointer;
+
+    .social-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      transition: transform .2s, background .2s;
+      cursor: pointer;
     }
-    .social-btn:hover{
-      transform:translateY(-4px);
-      background:var(--accent);
-      color:#fff;
+
+    .social-btn:hover {
+      transform: translateY(-4px);
+      background: var(--accent);
+      color: #fff;
     }
 
     /* Contact Form */
-    .contact-form{
-      background:#fafafa;
-      padding:40px;
-      border-radius:12px;
-      border:1px solid #eee;
-    }
-    .contact-form h2{
-      font-size:clamp(24px,4vw,32px);
-      margin:0 0 24px;
-      font-weight:700;
-      color:var(--accent);
+    .contact-form {
+      background: #fafafa;
+      padding: 40px;
+      border-radius: 12px;
+      border: 1px solid #eee;
     }
 
-    .form-group{
-      margin-bottom:20px;
-    }
-    .form-group label{
-      display:block;
-      margin-bottom:8px;
-      font-weight:600;
-      color:var(--text);
-      font-size:14px;
-    }
-    .form-group label span{
-      color:#e0245e;
-    }
-    .form-control{
-      width:100%;
-      padding:12px 16px;
-      border:1px solid #ddd;
-      border-radius:8px;
-      font-family:inherit;
-      font-size:15px;
-      transition:border-color .2s,box-shadow .2s;
-      background:#fff;
-    }
-    .form-control:focus{
-      outline:none;
-      border-color:var(--gold);
-      box-shadow:0 0 0 3px rgba(212,175,55,0.1);
-    }
-    textarea.form-control{
-      resize:vertical;
-      min-height:120px;
+    .contact-form h2 {
+      font-size: clamp(24px, 4vw, 32px);
+      margin: 0 0 24px;
+      font-weight: 700;
+      color: var(--accent);
     }
 
-    .form-row{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:20px;
+    .form-group {
+      margin-bottom: 20px;
     }
 
-    .submit-btn{
-      width:100%;
-      padding:14px;
-      background:var(--accent);
-      color:#fff;
-      border:none;
-      border-radius:8px;
-      font-size:16px;
-      font-weight:600;
-      cursor:pointer;
-      transition:transform .2s,box-shadow .2s;
-      margin-top:8px;
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--text);
+      font-size: 14px;
     }
-    .submit-btn:hover{
-      transform:translateY(-4px);
-      box-shadow:0 12px 28px rgba(0,0,0,0.15);
+
+    .form-group label span {
+      color: #e0245e;
     }
-    .submit-btn:disabled{
-      opacity:0.6;
-      cursor:not-allowed;
-      transform:none;
+
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 15px;
+      transition: border-color .2s, box-shadow .2s;
+      background: #fff;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+      margin-top: 8px;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
     }
 
     /* Success Message */
-    .success-message{
-      display:none;
-      padding:16px 20px;
-      background:#4caf50;
-      color:#fff;
-      border-radius:8px;
-      margin-bottom:20px;
-      text-align:center;
-      font-weight:600;
-    }
-    .success-message.show{
-      display:block;
-      animation:slideIn .3s ease;
+    .success-message {
+      display: none;
+      padding: 16px 20px;
+      background: #4caf50;
+      color: #fff;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: 600;
     }
 
-    @keyframes slideIn{
-      from{
-        opacity:0;
-        transform:translateY(-10px);
+    .success-message.show {
+      display: block;
+      animation: slideIn .3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
       }
-      to{
-        opacity:1;
-        transform:translateY(0);
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
     }
 
     /* FAQ Section */
-    .faq-section{
-      background:#fafafa;
-      padding:64px 0;
-    }
-    .faq-container{
-      max-width:900px;
-      margin:0 auto;
-      padding:0 20px;
-    }
-    .faq-section h2{
-      font-size:clamp(32px,5vw,44px);
-      margin:0 0 16px;
-      font-weight:700;
-      color:var(--accent);
-      text-align:center;
-    }
-    .faq-section > p{
-      text-align:center;
-      color:var(--muted);
-      margin:0 0 48px;
-      font-size:18px;
+    .faq-section {
+      background: #fafafa;
+      padding: 64px 0;
     }
 
-    .faq-item{
-      background:#fff;
-      border:1px solid #eee;
-      border-radius:12px;
-      margin-bottom:16px;
-      overflow:hidden;
+    .faq-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px;
     }
-    .faq-question{
-      padding:20px 24px;
-      cursor:pointer;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      font-weight:600;
-      color:var(--accent);
-      transition:background .2s;
+
+    .faq-section h2 {
+      font-size: clamp(32px, 5vw, 44px);
+      margin: 0 0 16px;
+      font-weight: 700;
+      color: var(--accent);
+      text-align: center;
     }
-    .faq-question:hover{
-      background:#fafafa;
+
+    .faq-section>p {
+      text-align: center;
+      color: var(--muted);
+      margin: 0 0 48px;
+      font-size: 18px;
     }
-    .faq-icon{
-      font-size:20px;
-      transition:transform .3s;
+
+    .faq-item {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      overflow: hidden;
     }
-    .faq-item.active .faq-icon{
-      transform:rotate(180deg);
+
+    .faq-question {
+      padding: 20px 24px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      color: var(--accent);
+      transition: background .2s;
     }
-    .faq-answer{
-      max-height:0;
-      overflow:hidden;
-      transition:max-height .3s ease;
+
+    .faq-question:hover {
+      background: #fafafa;
     }
-    .faq-answer-content{
-      padding:0 24px 20px;
-      color:var(--muted);
-      line-height:1.7;
+
+    .faq-icon {
+      font-size: 20px;
+      transition: transform .3s;
     }
-    .faq-item.active .faq-answer{
-      max-height:500px;
+
+    .faq-item.active .faq-icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .3s ease;
+    }
+
+    .faq-answer-content {
+      padding: 0 24px 20px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 500px;
     }
 
     /* Footer */
-    footer{border-top:1px solid #eee;padding:36px 0;color:var(--muted)}
-    .footer-grid{display:grid;grid-template-columns:1fr 220px;gap:20px;align-items:start}
+    footer {
+      border-top: 1px solid #eee;
+      padding: 36px 0;
+      color: var(--muted)
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr 220px;
+      gap: 20px;
+      align-items: start
+    }
 
     /* Cart Count Badge */
-    .cart-count{
-      position:absolute;
-      top:-6px;
-      right:-6px;
-      background:#e0245e;
-      color:#fff;
-      border-radius:10px;
-      padding:2px 6px;
-      font-size:11px;
-      font-weight:600;
-      min-width:18px;
-      text-align:center;
+    .cart-count {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: #e0245e;
+      color: #fff;
+      border-radius: 10px;
+      padding: 2px 6px;
+      font-size: 11px;
+      font-weight: 600;
+      min-width: 18px;
+      text-align: center;
     }
 
     /* Responsive */
-    @media (max-width:900px){
-      .contact-container{
-        grid-template-columns:1fr;
-        gap:48px;
-        padding:48px 20px;
+    @media (max-width:900px) {
+      .contact-container {
+        grid-template-columns: 1fr;
+        gap: 48px;
+        padding: 48px 20px;
       }
-      .contact-form{
-        padding:32px 24px;
+
+      .contact-form {
+        padding: 32px 24px;
       }
-      .form-row{
-        grid-template-columns:1fr;
+
+      .form-row {
+        grid-template-columns: 1fr;
       }
-      .footer-grid{grid-template-columns:1fr}
+
+      .footer-grid {
+        grid-template-columns: 1fr
+      }
     }
 
-    select{
-      padding:8px;
-      border:1px solid #eee;
-      border-radius:6px;
-      font-family:inherit;
-      cursor:pointer;
+    select {
+      padding: 8px;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      font-family: inherit;
+      cursor: pointer;
     }
   </style>
 </head>
+
 <body>
-  <header>
-    <div class="container nav" role="navigation" aria-label="Main">
-      <div class="left">
-        <a class="logo" href="/">Natishlux</a>
-      </div>
-
-      <nav class="nav-links" id="navLinks" aria-label="Top">
-        <a href="index.html">Home</a>
-        <a href="shop.html">Shop</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-
-      <div class="nav-right">
-        <button class="icon-btn" aria-label="Search" id="openSearch">🔍</button>
-        <a class="icon-btn" href="cart.html" aria-label="Cart" id="cartIcon" style="position:relative">
-          🛒
-          <span class="cart-count" id="cartCount" style="display:none">0</span>
-        </a>
-        <button class="btn menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="navLinks">Menu</button>
-      </div>
-    </div>
-  </header>
+  <div id="header-placeholder"></div>
 
   <main>
     <!-- Page Header -->
@@ -432,7 +616,8 @@
       <!-- Contact Info -->
       <div class="contact-info">
         <h2>Contact Information</h2>
-        <p>Reach out to us through any of these channels. We're here to help with your questions about our products, orders, or anything else.</p>
+        <p>Reach out to us through any of these channels. We're here to help with your questions about our products,
+          orders, or anything else.</p>
 
         <div class="info-items">
           <div class="info-item">
@@ -449,7 +634,7 @@
             <div class="info-content">
               <h3>Call Us</h3>
               <p><a href="tel:+233123456789">+233 123 456 789</a></p>
-              <p style="font-size:14px;margin-top:4px">Mon-Fri: 9am - 6pm (GMT)</p>
+              <p style="font-size:14px;margin-top:4px">Mon-Fri: 9am - 6pm (ET)</p>
             </div>
           </div>
 
@@ -457,7 +642,7 @@
             <div class="info-icon">📍</div>
             <div class="info-content">
               <h3>Visit Us</h3>
-              <p>Accra, Greater Accra Region</p>
+              <p>Alexandria, Virginia</p>
               <p>Ghana</p>
             </div>
           </div>
@@ -474,17 +659,32 @@
         </div>
 
         <div class="social-links">
-          <a href="https://facebook.com/allthingfabs" class="social-btn" aria-label="Facebook" target="_blank" rel="noopener">
-            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          <a href="https://facebook.com/allthingfabs" class="social-btn" aria-label="Facebook" target="_blank"
+            rel="noopener">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+            </svg>
           </a>
-          <a href="https://instagram.com/allthingfabs" class="social-btn" aria-label="Instagram" target="_blank" rel="noopener">
-            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          <a href="https://instagram.com/allthingfabs" class="social-btn" aria-label="Instagram" target="_blank"
+            rel="noopener">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+            </svg>
           </a>
-          <a href="https://twitter.com/allthingfabs" class="social-btn" aria-label="Twitter" target="_blank" rel="noopener">
-            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+          <a href="https://twitter.com/allthingfabs" class="social-btn" aria-label="Twitter" target="_blank"
+            rel="noopener">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+            </svg>
           </a>
           <a href="https://wa.me/233123456789" class="social-btn" aria-label="WhatsApp" target="_blank" rel="noopener">
-            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+            </svg>
           </a>
         </div>
       </div>
@@ -492,7 +692,7 @@
       <!-- Contact Form -->
       <div class="contact-form">
         <h2>Send Us a Message</h2>
-        
+
         <div class="success-message" id="successMessage">
           ✓ Thank you! Your message has been sent successfully.
         </div>
@@ -548,7 +748,8 @@
             </div>
             <div class="faq-answer">
               <div class="faq-answer-content">
-                We offer a 30-day return policy on all products. Items must be unused and in their original packaging. Contact us at allthingfabs@gmail.com to initiate a return.
+                We offer a 30-day return policy on all products. Items must be unused and in their original packaging.
+                Contact us at allthingfabs@gmail.com to initiate a return.
               </div>
             </div>
           </div>
@@ -560,7 +761,8 @@
             </div>
             <div class="faq-answer">
               <div class="faq-answer-content">
-                Standard shipping typically takes 3-7 business days within Ghana and 7-14 days internationally. Free shipping is available on orders over $99.
+                Standard shipping typically takes 3-7 business days within Ghana and 7-14 days internationally. Free
+                shipping is available on orders over $99.
               </div>
             </div>
           </div>
@@ -572,7 +774,8 @@
             </div>
             <div class="faq-answer">
               <div class="faq-answer-content">
-                Yes! All our wigs, bundles, closures, and frontals are made from premium 100% human hair. We guarantee authenticity and quality on every product.
+                Yes! All our wigs, bundles, closures, and frontals are made from premium 100% human hair. We guarantee
+                authenticity and quality on every product.
               </div>
             </div>
           </div>
@@ -584,7 +787,8 @@
             </div>
             <div class="faq-answer">
               <div class="faq-answer-content">
-                Absolutely! Once your order ships, you'll receive a tracking number via email. You can use this to monitor your delivery status in real-time.
+                Absolutely! Once your order ships, you'll receive a tracking number via email. You can use this to
+                monitor your delivery status in real-time.
               </div>
             </div>
           </div>
@@ -596,7 +800,8 @@
             </div>
             <div class="faq-answer">
               <div class="faq-answer-content">
-                Yes! We offer custom color, length, and styling services. Contact us with your specific requirements and we'll provide a quote and timeline.
+                Yes! We offer custom color, length, and styling services. Contact us with your specific requirements and
+                we'll provide a quote and timeline.
               </div>
             </div>
           </div>
@@ -609,11 +814,12 @@
     <div class="container footer-grid">
       <div>
         <strong>Natishlux</strong>
-        <p style="margin-top:8px;color:var(--muted)">Ready-to-wear wigs & premium bundles. Email: <a href="mailto:Natishlux@gmail.com" style="text-decoration:underline">Natishlux@gmail.com</a></p>
+        <p style="margin-top:8px;color:var(--muted)">Ready-to-wear wigs & premium bundles. Email: <a
+            href="mailto:Natishlux@gmail.com" style="text-decoration:underline">Natishlux@gmail.com</a></p>
         <nav style="margin-top:16px;color:var(--muted)">
           <a href="about.html" style="margin-right:12px">About</a>
           <a href="contact.html" style="margin-right:12px">Contact</a>
-          
+
         </nav>
       </div>
 
@@ -627,21 +833,21 @@
       </div>
     </div>
 
-    <div class="container" style="margin-top:22px;border-top:1px solid #f1f1f1;padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+    <div class="container"
+      style="margin-top:22px;border-top:1px solid #f1f1f1;padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
       <div style="color:var(--muted)">&copy; 2025 Natishlux</div>
       <div style="color:var(--muted)">Payment icons • Socials</div>
     </div>
   </footer>
 
-  <script>
-    // Mobile menu
-    const menuToggle = document.getElementById('menuToggle');
-    const navLinks = document.getElementById('navLinks');
-    menuToggle.addEventListener('click', () => {
-      const isActive = navLinks.classList.toggle('active');
-      menuToggle.setAttribute('aria-expanded', isActive);
-    });
+  <script type="module">
+    import { createHeader, initializeHeader } from './src/components/header.js';
 
+    // Insert header
+    document.getElementById('header-placeholder').innerHTML = createHeader();
+
+    // Initialize header functionality
+    initializeHeader();
     // Contact form submission
     const contactForm = document.getElementById('contactForm');
     const submitBtn = document.getElementById('submitBtn');
@@ -649,7 +855,7 @@
 
     contactForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      
+
       // Disable button
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending...';
@@ -658,10 +864,10 @@
       setTimeout(() => {
         // Show success message
         successMessage.classList.add('show');
-        
+
         // Reset form
         contactForm.reset();
-        
+
         // Re-enable button
         submitBtn.disabled = false;
         submitBtn.textContent = 'Send Message';
@@ -678,12 +884,12 @@
       question.addEventListener('click', () => {
         const item = question.parentElement;
         const isActive = item.classList.contains('active');
-        
+
         // Close all other items
         document.querySelectorAll('.faq-item').forEach(otherItem => {
           otherItem.classList.remove('active');
         });
-        
+
         // Toggle current item
         if (!isActive) {
           item.classList.add('active');
@@ -705,5 +911,7 @@
       });
     });
   </script>
+
 </body>
+
 </html>

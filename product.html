@@ -17,15 +17,21 @@
       --accent: #000;
       --gold: #e0245e;
       --container: 1200px;
+      --gap: 24px;
+      --radius: 10px;
+      --fw-regular: 400;
+      --fw-medium: 600;
     }
 
     * {
-      box-sizing: border-box
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     html,
     body {
-      height: 100%
+      min-height: 100%;
     }
 
     body {
@@ -33,32 +39,36 @@
       font-family: "Jost", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
       color: var(--text);
       background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
       line-height: 1.45;
     }
 
     a {
       color: inherit;
-      text-decoration: none
+      text-decoration: none;
     }
 
     img {
       max-width: 100%;
       display: block;
-      height: auto
+      height: auto;
     }
 
     .container {
       max-width: var(--container);
       margin: 0 auto;
-      padding: 0 20px
+      padding: 0 20px;
     }
 
+    /* ===== HEADER STYLES ===== */
     header {
       border-bottom: 1px solid #eee;
-      background: #fff;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
       position: sticky;
       top: 0;
       z-index: 50;
+      backdrop-filter: saturate(120%) blur(6px);
     }
 
     .nav {
@@ -66,24 +76,61 @@
       align-items: center;
       justify-content: space-between;
       padding: 18px 0;
+      gap: 20px;
     }
 
     .logo {
       font-weight: 700;
-      letter-spacing: .3px;
-      font-size: 20px
+      letter-spacing: 0.3px;
+      font-size: 20px;
+      flex-shrink: 0;
+      transition: color 0.2s ease;
+    }
+
+    .logo:hover {
+      color: var(--gold);
     }
 
     .nav-links {
       display: flex;
-      gap: 18px;
-      align-items: center
+      gap: 24px;
+      align-items: center;
+      margin: 0 auto;
+      /* Center the nav links */
+    }
+
+    .nav-links a {
+      transition: color 0.18s ease, transform 0.18s ease;
+      font-weight: 500;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+      transform: translateY(-2px);
     }
 
     .nav-right {
       display: flex;
       gap: 12px;
-      align-items: center
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-weight: var(--fw-medium);
+      border: none;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s;
+      font-family: inherit;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     }
 
     .icon-btn {
@@ -92,18 +139,99 @@
       padding: 8px;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 18px
+      font-size: 18px;
+      transition: transform 0.18s, background 0.18s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
     }
 
-    .btn {
-      background: var(--accent);
-      color: #fff;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer
+    .icon-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(0, 0, 0, 0.03);
+      border-color: #ddd;
     }
+
+    .menu-toggle {
+      display: none;
+      font-size: 20px;
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: var(--gold);
+      color: #fff;
+      border-radius: 10px;
+      padding: 2px 6px;
+      font-size: 11px;
+      font-weight: 600;
+      min-width: 18px;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    /* ===== MOBILE STYLES ===== */
+    @media (max-width: 900px) {
+      .nav {
+        position: relative;
+        padding: 16px 0;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      .container {
+        padding: 0 16px;
+        /* Increase horizontal padding on mobile */
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #fff;
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        gap: 0;
+        margin: 0;
+        z-index: 100;
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 12px 16px;
+        width: 100%;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .nav-links a:last-child {
+        border-bottom: none;
+      }
+
+      .menu-toggle {
+        display: inline-flex;
+      }
+    }
+
+    /* ===== REST OF YOUR PAGE-SPECIFIC STYLES GO HERE ===== */
+
+    /* Ensure nav links are clickable on mobile */
+    .nav-links a {
+      display: block;
+      padding: 8px 0;
+      width: 100%;
+    }
+
+
 
     .product-container {
       max-width: 1200px;
@@ -333,21 +461,7 @@
 </head>
 
 <body>
-  <header>
-    <div class="container nav">
-      <a class="logo" href="/">Natishlux</a>
-      <nav class="nav-links" id="navLinks">
-        <a href="index.html">Home</a>
-        <a href="shop.html">Shop</a>
-      </nav>
-      <div class="nav-right">
-        <a class="icon-btn" href="cart.html" style="position:relative">
-          🛒
-          <span class="cart-count" id="cartCount" style="display:none">0</span>
-        </a>
-      </div>
-    </div>
-  </header>
+  <div id="header-placeholder"></div>
 
   <main>
     <!-- Loading State -->
@@ -407,75 +521,82 @@
   <div class="toast" id="toast"></div>
 
   <script type="module">
-  import { store } from './src/main.js';
-  import { addToCart } from './src/store/slices/cartSlice.js';
-  import { productAPI } from './src/services/apiMethods.js';
+    import { store } from './src/main.js';
+    import { addToCart } from './src/store/slices/cartSlice.js';
+    import { productAPI } from './src/services/apiMethods.js';
+    import { createHeader, initializeHeader } from './src/components/header.js';
 
-  let product = null;
-  let quantity = 1;
+    // Insert header
+    document.getElementById('header-placeholder').innerHTML = createHeader();
 
-  // Get product ID from URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const productId = urlParams.get('id');
+    // Initialize header functionality
+    initializeHeader();
 
-  console.log('Product ID from URL:', productId);
+    let product = null;
+    let quantity = 1;
 
-  if (!productId) {
-    showError();
-  } else {
-    loadProduct();
-  }
+    // Get product ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
 
-  async function loadProduct() {
-    try {
-      console.log('Fetching product:', productId);
-      const response = await productAPI.getById(productId);
-      console.log('Product response:', response);
-      product = response.data.data;
-      
-      displayProduct(product);
-    } catch (error) {
-      console.error('Failed to load product:', error);
+    console.log('Product ID from URL:', productId);
+
+    if (!productId) {
       showError();
+    } else {
+      loadProduct();
     }
-  }
 
-  function displayProduct(product) {
-    document.getElementById('loadingState').style.display = 'none';
-    document.getElementById('productContainer').style.display = 'grid';
+    async function loadProduct() {
+      try {
+        console.log('Fetching product:', productId);
+        const response = await productAPI.getById(productId);
+        console.log('Product response:', response);
+        product = response.data.data;
 
-    // Update page title
-    document.title = `${product.name} — Natishlux`;
+        displayProduct(product);
+      } catch (error) {
+        console.error('Failed to load product:', error);
+        showError();
+      }
+    }
 
-    // Main image
-    document.getElementById('mainImage').innerHTML = `
+    function displayProduct(product) {
+      document.getElementById('loadingState').style.display = 'none';
+      document.getElementById('productContainer').style.display = 'grid';
+
+      // Update page title
+      document.title = `${product.name} — Natishlux`;
+
+      // Main image
+      document.getElementById('mainImage').innerHTML = `
       <img src="${product.imageUrl}" alt="${product.name}" onerror="this.src='assets/img/placeholder.jpg'">
     `;
 
-    // Product info
-    document.getElementById('productName').textContent = product.name;
-    document.getElementById('productPrice').textContent = `$${product.price.toFixed(2)}`;
-    document.getElementById('productDescription').textContent = product.description;
+      // Product info
+      document.getElementById('productName').textContent = product.name;
+      document.getElementById('productPrice').textContent = `$${product.price.toFixed(2)}`;
+      document.getElementById('productDescription').textContent = product.description;
 
-    // Stock status
-    const stockStatus = document.getElementById('stockStatus');
-    const isInStock = product.isActive && (!product.trackQuantity || product.quantity > 0);
-    
-    if (isInStock) {
-      stockStatus.className = 'stock-status in-stock';
-      if (product.trackQuantity) {
-        stockStatus.textContent = `In Stock (${product.quantity} available)`;
+      // Stock status
+      const stockStatus = document.getElementById('stockStatus');
+      const isInStock = product.isActive && (!product.trackQuantity || product.quantity > 0);
+
+      if (isInStock) {
+        stockStatus.className = 'stock-status in-stock';
+        if (product.trackQuantity) {
+          stockStatus.textContent = `In Stock (${product.quantity} available)`;
+        } else {
+          stockStatus.textContent = 'In Stock';
+        }
       } else {
-        stockStatus.textContent = 'In Stock';
+        stockStatus.className = 'stock-status out-of-stock';
+        stockStatus.textContent = 'Out of Stock';
+        document.getElementById('addToCartBtn').disabled = true;
       }
-    } else {
-      stockStatus.className = 'stock-status out-of-stock';
-      stockStatus.textContent = 'Out of Stock';
-      document.getElementById('addToCartBtn').disabled = true;
-    }
 
-    // Product meta
-    const metaHtml = `
+      // Product meta
+      const metaHtml = `
       <div class="meta-item">
         <span class="meta-label">SKU</span>
         <span>${product.sku}</span>
@@ -499,92 +620,93 @@
         </div>
       ` : ''}
     `;
-    
-    document.getElementById('productMeta').innerHTML = metaHtml;
 
-    // Update max quantity
-    if (product.trackQuantity) {
-      document.getElementById('increaseQty').dataset.maxQuantity = product.quantity;
+      document.getElementById('productMeta').innerHTML = metaHtml;
+
+      // Update max quantity
+      if (product.trackQuantity) {
+        document.getElementById('increaseQty').dataset.maxQuantity = product.quantity;
+      }
     }
-  }
 
-  function showError() {
-    document.getElementById('loadingState').style.display = 'none';
-    document.getElementById('errorState').style.display = 'block';
-  }
-
-  function showToast(message) {
-    const toast = document.getElementById('toast');
-    toast.textContent = message;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3000);
-  }
-
-  // Quantity controls
-  document.getElementById('decreaseQty').addEventListener('click', () => {
-    if (quantity > 1) {
-      quantity--;
-      document.getElementById('quantityValue').textContent = quantity;
+    function showError() {
+      document.getElementById('loadingState').style.display = 'none';
+      document.getElementById('errorState').style.display = 'block';
     }
-  });
 
-  document.getElementById('increaseQty').addEventListener('click', (e) => {
-    const maxQty = e.target.dataset.maxQuantity;
-    if (product && product.trackQuantity && maxQty) {
-      if (quantity < parseInt(maxQty)) {
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Quantity controls
+    document.getElementById('decreaseQty').addEventListener('click', () => {
+      if (quantity > 1) {
+        quantity--;
+        document.getElementById('quantityValue').textContent = quantity;
+      }
+    });
+
+    document.getElementById('increaseQty').addEventListener('click', (e) => {
+      const maxQty = e.target.dataset.maxQuantity;
+      if (product && product.trackQuantity && maxQty) {
+        if (quantity < parseInt(maxQty)) {
+          quantity++;
+          document.getElementById('quantityValue').textContent = quantity;
+        } else {
+          showToast('Maximum stock reached');
+        }
+      } else {
         quantity++;
         document.getElementById('quantityValue').textContent = quantity;
-      } else {
-        showToast('Maximum stock reached');
       }
-    } else {
-      quantity++;
-      document.getElementById('quantityValue').textContent = quantity;
-    }
-  });
+    });
 
-  // Add to cart
-  document.getElementById('addToCartBtn').addEventListener('click', async () => {
-  if (!product) return;
+    // Add to cart
+    document.getElementById('addToCartBtn').addEventListener('click', async () => {
+      if (!product) return;
 
-  const btn = document.getElementById('addToCartBtn');
-  const originalText = btn.textContent;
+      const btn = document.getElementById('addToCartBtn');
+      const originalText = btn.textContent;
 
-  try {
-    btn.disabled = true;
-    btn.textContent = 'Adding...';
+      try {
+        btn.disabled = true;
+        btn.textContent = 'Adding...';
 
-    // Check if item already in cart
-    const state = store.getState();
-    const existingItem = state.cart.items.find(item => item.product.id === product.id);
+        // Check if item already in cart
+        const state = store.getState();
+        const existingItem = state.cart.items.find(item => item.product.id === product.id);
 
-    store.dispatch(addToCart({ product, quantity }));
+        store.dispatch(addToCart({ product, quantity }));
 
-    btn.textContent = 'Added ✓';
-    
-    if (existingItem) {
-      const newQuantity = existingItem.quantity + quantity;
-      showToast(`${product.name} quantity updated to ${newQuantity}!`);
-    } else {
-      showToast(`${product.name} added to cart!`);
-    }
+        btn.textContent = 'Added ✓';
 
-    // Reset quantity selector
-    quantity = 1;
-    document.getElementById('quantityValue').textContent = quantity;
+        if (existingItem) {
+          const newQuantity = existingItem.quantity + quantity;
+          showToast(`${product.name} quantity updated to ${newQuantity}!`);
+        } else {
+          showToast(`${product.name} added to cart!`);
+        }
 
-    setTimeout(() => {
-      btn.disabled = false;
-      btn.textContent = originalText;
-    }, 2000);
-  } catch (error) {
-    console.error('Error adding to cart:', error);
-    showToast('Failed to add to cart');
-    btn.disabled = false;
-    btn.textContent = originalText;
-  }
-});
-</script>
+        // Reset quantity selector
+        quantity = 1;
+        document.getElementById('quantityValue').textContent = quantity;
+
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.textContent = originalText;
+        }, 2000);
+      } catch (error) {
+        console.error('Error adding to cart:', error);
+        showToast('Failed to add to cart');
+        btn.disabled = false;
+        btn.textContent = originalText;
+      }
+    });
+  </script>
+
 </body>
 
 </html>

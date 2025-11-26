@@ -12,11 +12,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
+    /* Include the standardized CSS from above here */
     :root {
       --bg: #fff;
       --text: #111;
       --muted: #666;
       --accent: #000;
+      --gold: #e0245e;
       --container: 1200px;
       --gap: 24px;
       --radius: 10px;
@@ -25,12 +27,14 @@
     }
 
     * {
-      box-sizing: border-box
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     html,
     body {
-      height: 100%
+      min-height: 100%;
     }
 
     body {
@@ -45,21 +49,22 @@
 
     a {
       color: inherit;
-      text-decoration: none
+      text-decoration: none;
     }
 
     img {
       max-width: 100%;
       display: block;
-      height: auto
+      height: auto;
     }
 
     .container {
       max-width: var(--container);
       margin: 0 auto;
-      padding: 0 20px
+      padding: 0 20px;
     }
 
+    /* ===== HEADER STYLES ===== */
     header {
       border-bottom: 1px solid #eee;
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9));
@@ -74,24 +79,43 @@
       align-items: center;
       justify-content: space-between;
       padding: 18px 0;
+      gap: 20px;
     }
 
     .logo {
       font-weight: 700;
-      letter-spacing: .3px;
-      font-size: 20px
+      letter-spacing: 0.3px;
+      font-size: 20px;
+      flex-shrink: 0;
+      transition: color 0.2s ease;
+    }
+
+    .logo:hover {
+      color: var(--gold);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      margin: 0 auto;
+    }
+
+    .nav-links a {
+      transition: color 0.18s ease, transform 0.18s ease;
+      font-weight: 500;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+      transform: translateY(-2px);
     }
 
     .nav-right {
       display: flex;
       gap: 12px;
-      align-items: center
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 18px;
-      align-items: center
+      align-items: center;
+      flex-shrink: 0;
     }
 
     .btn {
@@ -101,7 +125,14 @@
       border-radius: 8px;
       font-weight: var(--fw-medium);
       border: none;
-      cursor: pointer
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s;
+      font-family: inherit;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     }
 
     .icon-btn {
@@ -110,14 +141,54 @@
       padding: 8px;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 18px
+      font-size: 18px;
+      transition: transform 0.18s, background 0.18s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .icon-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(0, 0, 0, 0.03);
+      border-color: #ddd;
     }
 
     .menu-toggle {
-      display: none
+      display: none;
+      font-size: 20px;
     }
 
-    @media (max-width:900px) {
+    .cart-count {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: var(--gold);
+      color: #fff;
+      border-radius: 10px;
+      padding: 2px 6px;
+      font-size: 11px;
+      font-weight: 600;
+      min-width: 18px;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    /* ===== MOBILE STYLES ===== */
+    @media (max-width: 900px) {
+      .nav {
+        position: relative;
+        padding: 16px 0;
+       margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      .container {
+        padding: 0 16px;
+        /* Increase horizontal padding on mobile */
+      }
+
       .nav-links {
         display: none;
         position: absolute;
@@ -128,41 +199,55 @@
         flex-direction: column;
         padding: 20px;
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        gap: 12px;
+        gap: 0;
+        margin: 0;
+        z-index: 100;
       }
 
       .nav-links.active {
-        display: flex
+        display: flex;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 12px 16px;
+        width: 100%;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .nav-links a:last-child {
+        border-bottom: none;
       }
 
       .menu-toggle {
-        display: inline-flex
+        display: inline-flex;
       }
     }
 
+    /* ===== PAGE-SPECIFIC STYLES ===== */
     .hero {
       display: grid;
       grid-template-columns: 1fr 520px;
       gap: var(--gap);
       align-items: center;
-      padding: 64px 0
+      padding: 64px 0;
     }
 
     .hero-info h1 {
       font-size: clamp(28px, 5vw, 48px);
       margin: 0 0 16px;
-      line-height: 1.05
+      line-height: 1.05;
     }
 
     .hero-info p {
       color: var(--muted);
-      margin: 0 0 24px
+      margin: 0 0 24px;
     }
 
     .hero-cta {
       display: flex;
       gap: 12px;
-      flex-wrap: wrap
+      flex-wrap: wrap;
     }
 
     .hero-media {
@@ -178,31 +263,31 @@
       font-size: 18px;
     }
 
-    @media (max-width:900px) {
+    @media (max-width: 900px) {
       .hero {
         grid-template-columns: 1fr;
         text-align: center;
-        padding: 36px 0
+        padding: 36px 0;
       }
 
       .hero-media {
         order: -1;
-        min-height: 220px
+        min-height: 220px;
       }
 
       .container {
-        padding: 0 18px
+        padding: 0 18px;
       }
     }
 
     .collections {
-      padding: 48px 0
+      padding: 48px 0;
     }
 
     .grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 20px
+      gap: 20px;
     }
 
     .card {
@@ -210,13 +295,13 @@
       overflow: hidden;
       background: #fff;
       border: 1px solid #f3f3f3;
-      transition: transform .28s, box-shadow .28s;
+      transition: transform 0.28s, box-shadow 0.28s;
       position: relative;
     }
 
     .card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08)
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
     }
 
     .card .card-img {
@@ -230,18 +315,18 @@
     }
 
     .card .meta {
-      padding: 14px 14px 56px
+      padding: 14px 14px 56px;
     }
 
     .card h3 {
       margin: 0;
-      font-size: 16px
+      font-size: 16px;
     }
 
     .card p {
       margin: 8px 0 0;
       color: var(--muted);
-      font-size: 14px
+      font-size: 14px;
     }
 
     .card .actions {
@@ -251,7 +336,7 @@
       display: flex;
       gap: 6px;
       align-items: center;
-      z-index: 10
+      z-index: 10;
     }
 
     .cart-btn {
@@ -268,17 +353,17 @@
       width: 34px;
       height: 34px;
       box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
-      transition: transform .2s, box-shadow .2s;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .cart-btn:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08)
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
     }
 
     .cart-btn.added {
       background: #4caf50;
-      color: #fff
+      color: #fff;
     }
 
     .fav-btn {
@@ -294,101 +379,58 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      transition: color .2s;
+      transition: color 0.2s;
     }
 
     .fav-btn.active {
-      color: #e0245e
+      color: #e0245e;
     }
 
-    @media (max-width:1100px) {
+    @media (max-width: 1100px) {
       .grid {
-        grid-template-columns: repeat(3, 1fr)
+        grid-template-columns: repeat(3, 1fr);
       }
     }
 
-    @media (max-width:800px) {
+    @media (max-width: 800px) {
       .grid {
-        grid-template-columns: repeat(2, 1fr)
+        grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    @media (max-width:480px) {
+    @media (max-width: 480px) {
       .grid {
-        grid-template-columns: 1fr
-      }
-    }
-
-    @media (max-width:900px) {
-      .card .card-img {
-        height: 160px
+        grid-template-columns: 1fr;
       }
     }
 
     footer {
       border-top: 1px solid #eee;
       padding: 36px 0;
-      color: var(--muted)
+      color: var(--muted);
     }
 
     .footer-grid {
       display: grid;
       grid-template-columns: 1fr 220px;
       gap: 20px;
-      align-items: start
+      align-items: start;
     }
 
-    @media (max-width:700px) {
+    @media (max-width: 700px) {
       .footer-grid {
-        grid-template-columns: 1fr
+        grid-template-columns: 1fr;
       }
     }
 
     @keyframes spin {
       0% {
-        transform: rotate(0deg)
+        transform: rotate(0deg);
       }
 
       100% {
-        transform: rotate(360deg)
+        transform: rotate(360deg);
       }
-    }
-
-    .btn,
-    .icon-btn,
-    .nav-links a {
-      transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, color .18s ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.10);
-    }
-
-    .icon-btn:hover {
-      transform: translateY(-3px);
-      background: rgba(0, 0, 0, 0.03);
-      border-color: #e6e6e6;
-    }
-
-    .nav-links a:hover {
-      color: var(--accent);
-      transform: translateY(-2px);
-      text-decoration: underline;
-    }
-
-    .cart-count {
-      position: absolute;
-      top: -6px;
-      right: -6px;
-      background: #e0245e;
-      color: #fff;
-      border-radius: 10px;
-      padding: 2px 6px;
-      font-size: 11px;
-      font-weight: 600;
-      min-width: 18px;
-      text-align: center;
     }
 
     /* Search Modal */
@@ -407,7 +449,7 @@
     }
 
     .search-modal.active {
-      display: flex
+      display: flex;
     }
 
     .search-content {
@@ -433,7 +475,7 @@
       border-color: var(--accent);
     }
 
-    /* Notification Toast */
+    /* Toast Notification */
     .toast {
       position: fixed;
       bottom: 24px;
@@ -445,7 +487,7 @@
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
       transform: translateY(100px);
       opacity: 0;
-      transition: transform .3s, opacity .3s;
+      transition: transform 0.3s, opacity 0.3s;
       z-index: 1000;
     }
 
@@ -465,29 +507,7 @@
 </head>
 
 <body>
-  <header>
-    <div class="container nav" role="navigation" aria-label="Main">
-      <div class="left">
-        <a class="logo" href="/">Natishlux</a>
-      </div>
-
-      <nav class="nav-links" id="navLinks" aria-label="Top">
-        <a href="index.html">Home</a>
-        <a href="shop.html">Shop</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-
-      <div class="nav-right">
-        <button class="icon-btn" aria-label="Search" id="openSearch">🔍</button>
-        <a class="icon-btn" href="cart.html" aria-label="Cart" id="cartIcon" style="position:relative">
-          🛒
-          <span class="cart-count" id="cartCount" style="display:none">0</span>
-        </a>
-        <button class="btn menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="navLinks">Menu</button>
-      </div>
-    </div>
-  </header>
+  <div id="header-placeholder"></div>
 
   <main>
     <section class="container hero" aria-labelledby="hero-title">
@@ -501,7 +521,6 @@
       </div>
       <div class="hero-media" aria-hidden="false">
         <picture>
-          <!-- <source media="(min-width:900px)" srcset="cdn/shop/files/Image2024-06-24at15.09.28_5c22e864040e.jpg 1200w"> -->
           <img alt="Model wearing wig" loading="lazy" src="assets/img/new.jpg">
         </picture>
       </div>
@@ -516,7 +535,6 @@
       </div>
 
       <div class="grid" style="margin-top:18px" id="categoriesGrid">
-        <!-- Loading state -->
         <div style="grid-column:1/-1;text-align:center;padding:40px" id="categoriesLoading">
           <div
             style="width:40px;height:40px;border:4px solid #f3f3f3;border-top:4px solid #e0245e;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px">
@@ -529,7 +547,7 @@
     <section class="collections container popular" aria-labelledby="popular-title">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <h2 id="popular-title">Popular Items</h2>
-        <a href="shop.html " style="font-size:14px; font-weight:600; text-decoration:none; color:#333;">
+        <a href="shop.html" style="font-size:14px; font-weight:600; text-decoration:none; color:#333;">
           View All →
         </a>
       </div>
@@ -552,12 +570,11 @@
     <div class="container footer-grid">
       <div>
         <strong>Natishlux</strong>
-        <p style="margin-top:8px;color:var(--muted)">Ready-to-wear wigs & premium bundles. Email: <a
-            href="mailto:Natishlux@gmail.com" style="text-decoration:underline">Natishlux@gmail.com</a></p>
+        <p style="margin-top:8px;color:var(--muted)">Ready-to-wear wigs & premium bundles. Email:
+          href="mailto:Natishlux@gmail.com" style="text-decoration:underline">Natishlux@gmail.com</a></p>
         <nav style="margin-top:16px;color:var(--muted)">
           <a href="about.html" style="margin-right:12px">About</a>
           <a href="#contact" style="margin-right:12px">Contact</a>
-
         </nav>
       </div>
 
@@ -594,6 +611,13 @@
     import { store } from './src/main.js';
     import { addToCart } from './src/store/slices/cartSlice.js';
     import { productAPI, categoryAPI } from './src/services/apiMethods.js';
+    import { createHeader, initializeHeader } from './src/components/header.js';
+
+    // Insert header
+    document.getElementById('header-placeholder').innerHTML = createHeader();
+
+    // Initialize header functionality - CRITICAL: Call this after inserting HTML
+    initializeHeader();
 
     let featuredProducts = [];
 
@@ -604,37 +628,33 @@
         const categories = response.data.data;
 
         const grid = document.getElementById('categoriesGrid');
-
-        // Remove loading state
         const loading = document.getElementById('categoriesLoading');
         if (loading) loading.remove();
 
-        // Clear any existing content (safety measure)
         grid.innerHTML = '';
 
         if (!categories || categories.length === 0) {
           grid.innerHTML = `
-        <p style="grid-column:1/-1;text-align:center;color:var(--muted)">
-          No categories available at the moment.
-        </p>
-      `;
+            <p style="grid-column:1/-1;text-align:center;color:var(--muted)">
+              No categories available at the moment.
+            </p>
+          `;
           return;
         }
 
-        // Render only active categories
         categories.forEach(cat => {
           if (cat.isActive) {
             const card = document.createElement('a');
             card.className = 'card';
             card.href = `shop.html?category=${cat.id}`;
             card.innerHTML = `
-          <img src="${cat.imageUrl}" alt="${cat.name}" loading="lazy" 
-               onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22300%22 height=%22300%22/%3E%3Ctext fill=%22%23999%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-family=%22sans-serif%22 font-size=%2220%22%3E${cat.name}%3C/text%3E%3C/svg%3E'">
-          <div class="meta">
-            <h3>${cat.name}</h3>
-            <p>${cat.description || 'Explore our ' + cat.name.toLowerCase() + ' collection'}</p>
-          </div>
-        `;
+              <img src="${cat.imageUrl}" alt="${cat.name}" loading="lazy" 
+                   onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22300%22 height=%22300%22/%3E%3Ctext fill=%22%23999%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-family=%22sans-serif%22 font-size=%2220%22%3E${cat.name}%3C/text%3E%3C/svg%3E'">
+              <div class="meta">
+                <h3>${cat.name}</h3>
+                <p>${cat.description || 'Explore our ' + cat.name.toLowerCase() + ' collection'}</p>
+              </div>
+            `;
             grid.appendChild(card);
           }
         });
@@ -645,10 +665,10 @@
         if (loading) loading.remove();
 
         grid.innerHTML = `
-      <p style="grid-column:1/-1;text-align:center;color:var(--muted)">
-        Failed to load categories. Please refresh the page.
-      </p>
-    `;
+          <p style="grid-column:1/-1;text-align:center;color:var(--muted)">
+            Failed to load categories. Please refresh the page.
+          </p>
+        `;
       }
     }
 
@@ -661,10 +681,10 @@
       } catch (error) {
         console.error('Failed to load featured products:', error);
         document.getElementById('popularGrid').innerHTML = `
-        <p style="grid-column:1/-1;text-align:center;color:var(--muted)">
-          Failed to load products. Please refresh the page.
-        </p>
-      `;
+          <p style="grid-column:1/-1;text-align:center;color:var(--muted)">
+            Failed to load products. Please refresh the page.
+          </p>
+        `;
       }
     }
 
@@ -675,10 +695,10 @@
 
       if (!products || products.length === 0) {
         popularGrid.innerHTML = `
-        <p style="grid-column:1/-1;text-align:center;color:var(--muted)">
-          No products available at the moment.
-        </p>
-      `;
+          <p style="grid-column:1/-1;text-align:center;color:var(--muted)">
+            No products available at the moment.
+          </p>
+        `;
         return;
       }
 
@@ -688,25 +708,25 @@
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
-        <a href="product.html?id=${product.id}">
-          <img src="${product.imageUrl}" alt="${product.name}" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22300%22 height=%22300%22/%3E%3Ctext fill=%22%23999%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-family=%22sans-serif%22 font-size=%2220%22%3ENo Image%3C/text%3E%3C/svg%3E'">
-        </a>
-        <div class="meta">
-          <h3>${product.name}</h3>
-          <p>${product.description.substring(0, 80)}...</p>
-          <div style="margin-top:8px;font-weight:700;color:var(--accent)">
-            $${product.price.toFixed(2)}
+          <a href="product.html?id=${product.id}">
+            <img src="${product.imageUrl}" alt="${product.name}" loading="lazy" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22300%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22300%22 height=%22300%22/%3E%3Ctext fill=%22%23999%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-family=%22sans-serif%22 font-size=%2220%22%3ENo Image%3C/text%3E%3C/svg%3E'">
+          </a>
+          <div class="meta">
+            <h3>${product.name}</h3>
+            <p>${product.description.substring(0, 80)}...</p>
+            <div style="margin-top:8px;font-weight:700;color:var(--accent)">
+              $${product.price.toFixed(2)}
+            </div>
           </div>
-        </div>
-        <div class="actions">
-          <button class="cart-btn" data-product='${JSON.stringify(product).replace(/'/g, "&apos;")}' 
-                  ${!isInStock ? 'disabled' : ''}
-                  aria-label="Add ${product.name} to cart">
-            ${isInStock ? '🛒' : '✕'}
-          </button>
-          <button class="fav-btn" data-id="${product.id}" aria-label="Favorite ${product.name}">♡</button>
-        </div>
-      `;
+          <div class="actions">
+            <button class="cart-btn" data-product='${JSON.stringify(product).replace(/'/g, "&apos;")}' 
+                    ${!isInStock ? 'disabled' : ''}
+                    aria-label="Add ${product.name} to cart">
+              ${isInStock ? '🛒' : '✕'}
+            </button>
+            <button class="fav-btn" data-id="${product.id}" aria-label="Favorite ${product.name}">♡</button>
+          </div>
+        `;
         popularGrid.appendChild(card);
       });
     }
@@ -717,16 +737,6 @@
       toast.textContent = message;
       toast.classList.add('show');
       setTimeout(() => toast.classList.remove('show'), 3000);
-    }
-
-    // Mobile menu
-    const menuToggle = document.getElementById('menuToggle');
-    const navLinks = document.getElementById('navLinks');
-    if (menuToggle) {
-      menuToggle.addEventListener('click', () => {
-        const isActive = navLinks.classList.toggle('active');
-        menuToggle.setAttribute('aria-expanded', isActive);
-      });
     }
 
     // Search modal
@@ -776,7 +786,6 @@
           const originalContent = cartBtn.innerHTML;
           cartBtn.innerHTML = '...';
 
-          // Check if item already in cart
           const state = store.getState();
           const existingItem = state.cart.items.find(item => item.product.id === product.id);
 
@@ -831,6 +840,7 @@
     fetchCategories();
     fetchFeaturedProducts();
   </script>
+
 </body>
 
 </html>
