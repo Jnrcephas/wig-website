@@ -16,10 +16,6 @@
       --accent: #000;
       --gold: #e0245e;
       --container: 1200px;
-      --gap: 24px;
-      --radius: 10px;
-      --fw-regular: 400;
-      --fw-medium: 600;
     }
 
     * {
@@ -38,8 +34,6 @@
       font-family: "Jost", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
       color: var(--text);
       background: var(--bg);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
       line-height: 1.45;
     }
 
@@ -95,7 +89,6 @@
       gap: 24px;
       align-items: center;
       margin: 0 auto;
-      /* Center the nav links */
     }
 
     .nav-links a {
@@ -172,112 +165,7 @@
       line-height: 1.2;
     }
 
-    /* ===== MOBILE STYLES ===== */
-    @media (max-width: 900px) {
-      .nav {
-        position: relative;
-      }
-
-      .nav-links {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: #fff;
-        flex-direction: column;
-        padding: 20px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        gap: 0;
-        margin: 0;
-        z-index: 100;
-      }
-
-      .nav-links.active {
-        display: flex;
-      }
-
-      .nav-links a {
-        display: block;
-        padding: 12px 16px;
-        width: 100%;
-        border-bottom: 1px solid #f0f0f0;
-      }
-
-      .nav-links a:last-child {
-        border-bottom: none;
-      }
-
-      .menu-toggle {
-        display: inline-flex;
-      }
-    }
-
-    /* ===== REST OF YOUR PAGE-SPECIFIC STYLES GO HERE ===== */
-
-    .cart-count {
-      position: absolute;
-      top: -6px;
-      right: -6px;
-      background: #e0245e;
-      color: #fff;
-      border-radius: 10px;
-      padding: 2px 6px;
-      font-size: 11px;
-      font-weight: 600;
-      min-width: 18px;
-      text-align: center;
-    }
-
-    /* ===== MOBILE STYLES ===== */
-    @media (max-width: 900px) {
-      .nav {
-        position: relative;
-        padding: 16px 0;
-        margin-top: 20px;
-        margin-bottom: 20px;
-      }
-
-      .container {
-        padding: 0 16px;
-        /* Increase horizontal padding on mobile */
-      }
-
-      .nav-links {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: #fff;
-        flex-direction: column;
-        padding: 20px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        gap: 0;
-        margin: 0;
-        z-index: 100;
-      }
-
-      .nav-links.active {
-        display: flex;
-      }
-
-      .nav-links a {
-        display: block;
-        padding: 12px 16px;
-        width: 100%;
-        border-bottom: 1px solid #f0f0f0;
-      }
-
-      .nav-links a:last-child {
-        border-bottom: none;
-      }
-
-      .menu-toggle {
-        display: inline-flex;
-      }
-    }
-
+    /* ===== PAGE-SPECIFIC STYLES ===== */
     .page-header {
       text-align: center;
       padding: 48px 0 32px;
@@ -285,7 +173,7 @@
     }
 
     .page-header h1 {
-      font-size: clamp(32px, 5vw, 44px);
+      font-size: clamp(32px, 5vw, 48px);
       margin: 0 0 8px;
       color: var(--gold);
       font-weight: 700;
@@ -297,7 +185,6 @@
       gap: 8px;
       font-size: 14px;
       color: var(--muted);
-      margin-top: 8px;
     }
 
     .shop-container {
@@ -340,7 +227,7 @@
       padding: 10px 16px;
       border-radius: 8px;
       color: var(--muted);
-      transition: all .2s;
+      transition: all 0.2s;
     }
 
     .sidebar a:hover,
@@ -389,7 +276,7 @@
       border: 1px solid #f0f0f0;
       border-radius: 12px;
       overflow: hidden;
-      transition: transform .2s, box-shadow .2s;
+      transition: transform 0.2s, box-shadow 0.2s;
       position: relative;
     }
 
@@ -440,7 +327,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all .2s;
+      transition: all 0.2s;
     }
 
     .action-btn:hover {
@@ -461,7 +348,7 @@
       border-radius: 0 0 12px 12px;
       font-weight: 600;
       cursor: pointer;
-      transition: background .2s;
+      transition: background 0.2s;
     }
 
     .select-options-btn:hover:not(:disabled) {
@@ -473,7 +360,6 @@
       cursor: not-allowed;
     }
 
-    /* Empty State */
     .empty-state {
       text-align: center;
       padding: 80px 20px;
@@ -497,7 +383,6 @@
       margin: 0 0 24px;
     }
 
-    /* Loading State */
     .loading-state {
       grid-column: 1/-1;
       text-align: center;
@@ -521,15 +406,14 @@
 
     @keyframes spin {
       0% {
-        transform: rotate(0deg)
+        transform: rotate(0deg);
       }
 
       100% {
-        transform: rotate(360deg)
+        transform: rotate(360deg);
       }
     }
 
-    /* Error State */
     .error-state {
       grid-column: 1/-1;
       text-align: center;
@@ -563,7 +447,7 @@
       border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
-      transition: all .2s;
+      transition: all 0.2s;
     }
 
     .pagination button:hover:not(:disabled) {
@@ -601,7 +485,7 @@
       cursor: pointer;
       opacity: 0;
       visibility: hidden;
-      transition: all .3s;
+      transition: all 0.3s;
       z-index: 100;
     }
 
@@ -621,7 +505,7 @@
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
       transform: translateY(100px);
       opacity: 0;
-      transition: transform .3s, opacity .3s;
+      transition: transform 0.3s, opacity 0.3s;
       z-index: 1000;
       max-width: 400px;
     }
@@ -639,13 +523,17 @@
       background: #e74c3c;
     }
 
-    @media (max-width:900px) {
-      .shop-container {
-        grid-template-columns: 1fr;
+    /* ===== MOBILE STYLES ===== */
+    @media (max-width: 900px) {
+      .nav {
+        position: relative;
+        padding: 16px 0;
+        margin-top: 20px;
+        margin-bottom: 20px;
       }
 
-      .sidebar {
-        position: static;
+      .container {
+        padding: 0 16px;
       }
 
       .nav-links {
@@ -657,11 +545,37 @@
         background: #fff;
         flex-direction: column;
         padding: 20px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        gap: 0;
+        margin: 0;
+        z-index: 100;
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 12px 16px;
+        width: 100%;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .nav-links a:last-child {
+        border-bottom: none;
       }
 
       .menu-toggle {
-        display: block;
+        display: inline-flex;
+      }
+
+      .shop-container {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
       }
     }
   </style>
@@ -689,7 +603,6 @@
         <nav>
           <ul id="categoryList">
             <li><a href="#" data-category="all" class="active">All Products</a></li>
-            <!-- Categories will be loaded dynamically -->
             <li style="text-align:center;padding:20px 0" id="categoriesLoading">
               <div
                 style="width:24px;height:24px;border:3px solid #f3f3f3;border-top:3px solid #e0245e;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 8px">
@@ -713,20 +626,17 @@
         </div>
 
         <div class="product-grid" id="productGrid">
-          <!-- Loading State -->
           <div class="loading-state show" id="loadingState">
             <div class="spinner"></div>
             <p>Loading products...</p>
           </div>
 
-          <!-- Error State -->
           <div class="error-state" id="errorState">
             <h3>Failed to Load Products</h3>
             <p id="errorMessage">Something went wrong. Please try again.</p>
             <button class="btn" onclick="location.reload()">Retry</button>
           </div>
 
-          <!-- Empty State -->
           <div class="empty-state" id="emptyState" style="display:none">
             <div class="empty-state-icon">📦</div>
             <h3>No Products Found</h3>
@@ -754,32 +664,27 @@
 
     // Initialize header functionality
     initializeHeader();
-    // State
+
     let currentPage = 1;
     let currentCategory = null;
     let currentSort = '-createdAt';
     const itemsPerPage = 12;
 
-    // Get category from URL
     const urlParams = new URLSearchParams(window.location.search);
     const urlCategory = urlParams.get('category');
     if (urlCategory && urlCategory !== 'all') {
       currentCategory = urlCategory;
     }
 
-    // Fetch categories and update sidebar
     async function loadCategories() {
       try {
         const response = await categoryAPI.getAll();
         const categories = response.data.data;
 
         const sidebar = document.querySelector('#categoryList');
-
-        // Remove loading indicator
         const loadingEl = document.getElementById('categoriesLoading');
         if (loadingEl) loadingEl.remove();
 
-        // Categories are appended after "All Products" link
         categories.forEach(cat => {
           if (cat.isActive) {
             const li = document.createElement('li');
@@ -788,7 +693,6 @@
           }
         });
 
-        // Set active category based on URL
         if (currentCategory) {
           const activeLink = sidebar.querySelector(`a[data-category="${currentCategory}"]`);
           if (activeLink) {
@@ -798,8 +702,6 @@
         }
       } catch (error) {
         console.error('Failed to load categories:', error);
-
-        // Remove loading and show error
         const loadingEl = document.getElementById('categoriesLoading');
         if (loadingEl) {
           loadingEl.innerHTML = '<span style="font-size:11px;color:#e74c3c">Failed to load</span>';
@@ -807,7 +709,6 @@
       }
     }
 
-    // Fetch and render products
     async function fetchProducts() {
       try {
         document.getElementById('loadingState').classList.add('show');
@@ -828,7 +729,6 @@
 
         let response;
 
-        // FIXED: Only call getByCategory if we have a valid category ID (not 'all' or null)
         if (currentCategory && currentCategory !== 'all') {
           console.log('Fetching category:', currentCategory);
           response = await productAPI.getByCategory(currentCategory, params);
@@ -864,7 +764,6 @@
       }
     }
 
-    // Render products
     function renderProducts(products) {
       const grid = document.getElementById('productGrid');
 
@@ -891,7 +790,6 @@
       });
     }
 
-    // Render pagination
     function renderPagination(pagination) {
       const paginationEl = document.getElementById('pagination');
 
@@ -996,7 +894,6 @@
       setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
-    // Event delegation for product actions
     document.addEventListener('click', async (e) => {
       if (e.target.closest('.select-options-btn:not([disabled])')) {
         e.preventDefault();
@@ -1008,7 +905,6 @@
           const originalText = btn.textContent;
           btn.textContent = 'Adding...';
 
-          // Check if item already in cart
           const state = store.getState();
           const existingItem = state.cart.items.find(item => item.product.id === product.id);
 
@@ -1042,7 +938,6 @@
       }
     });
 
-    // Category filter - FIXED
     document.addEventListener('click', (e) => {
       const categoryLink = e.target.closest('#categoryList a[data-category]');
       if (categoryLink) {
@@ -1052,8 +947,6 @@
         categoryLink.classList.add('active');
 
         const category = categoryLink.dataset.category;
-
-        // FIXED: Set to null if 'all', otherwise use the actual category ID
         currentCategory = (category === 'all') ? null : category;
         currentPage = 1;
 
@@ -1069,23 +962,12 @@
       }
     });
 
-    // Sort handler
     document.getElementById('sortSelect').addEventListener('change', (e) => {
       currentSort = e.target.value;
       currentPage = 1;
       fetchProducts();
     });
 
-    // Mobile menu
-    const menuToggle = document.getElementById('menuToggle');
-    const navLinks = document.getElementById('navLinks');
-    if (menuToggle && navLinks) {
-      menuToggle.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-      });
-    }
-
-    // Scroll to top
     const scrollTop = document.getElementById('scrollTop');
     if (scrollTop) {
       window.addEventListener('scroll', () => {
@@ -1096,7 +978,6 @@
       });
     }
 
-    // Initial load
     loadCategories();
     fetchProducts();
   </script>
