@@ -225,6 +225,37 @@
       }
     }
 
+    /* Better touch targets for mobile */
+    @media (max-width: 900px) {
+      .menu-toggle {
+        min-width: 44px;
+        min-height: 44px;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+        touch-action: manipulation;
+      }
+
+      .icon-btn {
+        min-width: 44px;
+        min-height: 44px;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+        touch-action: manipulation;
+      }
+
+      /* Ensure menu toggle is always clickable */
+      .menu-toggle {
+        z-index: 1001;
+        position: relative;
+      }
+
+      /* Improve nav links touch targets */
+      .nav-links a {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+
     /* ===== PAGE STYLES ===== */
     .page-header {
       text-align: center;
@@ -678,8 +709,11 @@
     const navLinks = document.getElementById('navLinks');
     const body = document.body;
 
-    menuToggle.addEventListener('click', (e) => {
+    // Prevent default touch behavior and add both click and touch events
+    function toggleMenu(e) {
+      e.preventDefault();
       e.stopPropagation();
+
       const isActive = navLinks.classList.toggle('active');
       menuToggle.setAttribute('aria-expanded', isActive);
       menuToggle.textContent = isActive ? '✕' : '☰';
@@ -687,9 +721,14 @@
       if (window.innerWidth <= 900) {
         body.style.overflow = isActive ? 'hidden' : '';
       }
-    });
+    }
 
-    document.addEventListener('click', (e) => {
+    // Add both click and touchstart events for mobile compatibility
+    menuToggle.addEventListener('click', toggleMenu);
+    menuToggle.addEventListener('touchstart', toggleMenu, { passive: false });
+
+    // Close menu when clicking outside
+    function closeMenu(e) {
       if (navLinks.classList.contains('active') &&
         !navLinks.contains(e.target) &&
         !menuToggle.contains(e.target)) {
@@ -698,19 +737,27 @@
         menuToggle.textContent = '☰';
         body.style.overflow = '';
       }
-    });
+    }
 
+    document.addEventListener('click', closeMenu);
+    document.addEventListener('touchstart', closeMenu);
+
+    // Close menu when clicking a link
     navLinks.querySelectorAll('a').forEach(item => {
-      item.addEventListener('click', () => {
+      const closeMobileMenu = () => {
         if (window.innerWidth <= 900) {
           navLinks.classList.remove('active');
           menuToggle.setAttribute('aria-expanded', 'false');
           menuToggle.textContent = '☰';
           body.style.overflow = '';
         }
-      });
+      };
+
+      item.addEventListener('click', closeMobileMenu);
+      item.addEventListener('touchstart', closeMobileMenu);
     });
 
+    // Handle window resize
     let resizeTimer;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);

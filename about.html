@@ -220,6 +220,37 @@
       }
     }
 
+    /* Better touch targets for mobile */
+    @media (max-width: 900px) {
+      .menu-toggle {
+        min-width: 44px;
+        min-height: 44px;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+        touch-action: manipulation;
+      }
+
+      .icon-btn {
+        min-width: 44px;
+        min-height: 44px;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+        touch-action: manipulation;
+      }
+
+      /* Ensure menu toggle is always clickable */
+      .menu-toggle {
+        z-index: 1001;
+        position: relative;
+      }
+
+      /* Improve nav links touch targets */
+      .nav-links a {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+
     /* ===== PAGE-SPECIFIC STYLES ===== */
     .page-header {
       text-align: center;
@@ -561,7 +592,7 @@
     <div class="container footer-grid">
       <div>
         <strong>Natishlux</strong>
-        <p style="margin-top:8px;color:var(--muted)">Ready-to-wear wigs & premium bundles. Email: 
+        <p style="margin-top:8px;color:var(--muted)">Ready-to-wear wigs & premium bundles. Email:
           <a href="mailto:Natishlux@gmail.com" style="text-decoration:underline">Natishlux@gmail.com</a>
         </p>
         <nav style="margin-top:16px;color:var(--muted)">
@@ -595,9 +626,11 @@
     const navLinks = document.getElementById('navLinks');
     const body = document.body;
 
-    // Toggle menu
-    menuToggle.addEventListener('click', (e) => {
+    // Prevent default touch behavior and add both click and touch events
+    function toggleMenu(e) {
+      e.preventDefault();
       e.stopPropagation();
+
       const isActive = navLinks.classList.toggle('active');
       menuToggle.setAttribute('aria-expanded', isActive);
       menuToggle.textContent = isActive ? '✕' : '☰';
@@ -605,10 +638,14 @@
       if (window.innerWidth <= 900) {
         body.style.overflow = isActive ? 'hidden' : '';
       }
-    });
+    }
+
+    // Add both click and touchstart events for mobile compatibility
+    menuToggle.addEventListener('click', toggleMenu);
+    menuToggle.addEventListener('touchstart', toggleMenu, { passive: false });
 
     // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
+    function closeMenu(e) {
       if (navLinks.classList.contains('active') &&
         !navLinks.contains(e.target) &&
         !menuToggle.contains(e.target)) {
@@ -617,18 +654,24 @@
         menuToggle.textContent = '☰';
         body.style.overflow = '';
       }
-    });
+    }
+
+    document.addEventListener('click', closeMenu);
+    document.addEventListener('touchstart', closeMenu);
 
     // Close menu when clicking a link
     navLinks.querySelectorAll('a').forEach(item => {
-      item.addEventListener('click', () => {
+      const closeMobileMenu = () => {
         if (window.innerWidth <= 900) {
           navLinks.classList.remove('active');
           menuToggle.setAttribute('aria-expanded', 'false');
           menuToggle.textContent = '☰';
           body.style.overflow = '';
         }
-      });
+      };
+
+      item.addEventListener('click', closeMobileMenu);
+      item.addEventListener('touchstart', closeMobileMenu);
     });
 
     // Handle window resize
@@ -645,7 +688,6 @@
       }, 250);
     });
 
-    // Update cart count
     function updateCartCount() {
       const cartCountEl = document.getElementById('cartCount');
       if (!cartCountEl) return;

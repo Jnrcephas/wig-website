@@ -584,6 +584,37 @@
         position: static;
       }
     }
+
+    /* Better touch targets for mobile */
+    @media (max-width: 900px) {
+      .menu-toggle {
+        min-width: 44px;
+        min-height: 44px;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+        touch-action: manipulation;
+      }
+
+      .icon-btn {
+        min-width: 44px;
+        min-height: 44px;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+        touch-action: manipulation;
+      }
+
+      /* Ensure menu toggle is always clickable */
+      .menu-toggle {
+        z-index: 1001;
+        position: relative;
+      }
+
+      /* Improve nav links touch targets */
+      .nav-links a {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+      }
+    }
   </style>
 </head>
 
@@ -692,8 +723,11 @@
     const navLinks = document.getElementById('navLinks');
     const body = document.body;
 
-    menuToggle.addEventListener('click', (e) => {
+    // Prevent default touch behavior and add both click and touch events
+    function toggleMenu(e) {
+      e.preventDefault();
       e.stopPropagation();
+
       const isActive = navLinks.classList.toggle('active');
       menuToggle.setAttribute('aria-expanded', isActive);
       menuToggle.textContent = isActive ? '✕' : '☰';
@@ -701,9 +735,14 @@
       if (window.innerWidth <= 900) {
         body.style.overflow = isActive ? 'hidden' : '';
       }
-    });
+    }
 
-    document.addEventListener('click', (e) => {
+    // Add both click and touchstart events for mobile compatibility
+    menuToggle.addEventListener('click', toggleMenu);
+    menuToggle.addEventListener('touchstart', toggleMenu, { passive: false });
+
+    // Close menu when clicking outside
+    function closeMenu(e) {
       if (navLinks.classList.contains('active') &&
         !navLinks.contains(e.target) &&
         !menuToggle.contains(e.target)) {
@@ -712,19 +751,27 @@
         menuToggle.textContent = '☰';
         body.style.overflow = '';
       }
-    });
+    }
 
+    document.addEventListener('click', closeMenu);
+    document.addEventListener('touchstart', closeMenu);
+
+    // Close menu when clicking a link
     navLinks.querySelectorAll('a').forEach(item => {
-      item.addEventListener('click', () => {
+      const closeMobileMenu = () => {
         if (window.innerWidth <= 900) {
           navLinks.classList.remove('active');
           menuToggle.setAttribute('aria-expanded', 'false');
           menuToggle.textContent = '☰';
           body.style.overflow = '';
         }
-      });
+      };
+
+      item.addEventListener('click', closeMobileMenu);
+      item.addEventListener('touchstart', closeMobileMenu);
     });
 
+    // Handle window resize
     let resizeTimer;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
@@ -992,85 +1039,86 @@
         const btn = e.target.closest('.select-options-btn');
         const product = JSON.parse(btn.dataset.product);
         try {
-      btn.disabled = true;
-      const originalText = btn.textContent;
-      btn.textContent = 'Adding...';
+          btn.disabled = true;
+          const originalText = btn.textContent;
+          btn.textContent = 'Adding...';
 
-      const state = store.getState();
-      const existingItem = state.cart.items.find(item => item.product.id === product.id);
+          const state = store.getState();
+          const existingItem = state.cart.items.find(item => item.product.id === product.id);
 
-      store.dispatch(addToCart({ product, quantity: 1 }));
+          store.dispatch(addToCart({ product, quantity: 1 }));
 
-      btn.textContent = 'Added ✓';
+          btn.textContent = 'Added ✓';
 
-      if (existingItem) {
-        showToast(`${product.name} quantity increased to ${existingItem.quantity + 1}!`, 'success');
-      } else {
-        showToast(`${product.name} added to cart!`, 'success');
+          if (existingItem) {
+            showToast(`${product.name} quantity increased to ${existingItem.quantity + 1}!`, 'success');
+          } else {
+            showToast(`${product.name} added to cart!`, 'success');
+          }
+
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.textContent = originalText;
+          }, 2000);
+        } catch (error) {
+          console.error('Error adding to cart:', error);
+          showToast('Failed to add to cart', 'error');
+          btn.disabled = false;
+          btn.textContent = 'Add to Cart';
+        }
       }
 
-      setTimeout(() => {
-        btn.disabled = false;
-        btn.textContent = originalText;
-      }, 2000);
-    } catch (error) {
-      console.error('Error adding to cart:', error);
-      showToast('Failed to add to cart', 'error');
-      btn.disabled = false;
-      btn.textContent = 'Add to Cart';
+      if (e.target.closest('.fav')) {
+        e.preventDefault();
+        const btn = e.target.closest('.fav');
+        btn.classList.toggle('active');
+        btn.innerHTML = btn.classList.contains('active') ? '♥' : '♡';
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      const categoryLink = e.target.closest('#categoryList a[data-category]');
+      if (categoryLink) {
+        e.preventDefault();
+
+        document.querySelectorAll('#categoryList a').forEach(l => l.classList.remove('active'));
+        categoryLink.classList.add('active');
+
+        const category = categoryLink.dataset.category;
+        currentCategory = (category === 'all') ? null : category;
+        currentPage = 1;
+
+        const url = new URL(window.location);
+        if (currentCategory) {
+          url.searchParams.set('category', currentCategory);
+        } else {
+          url.searchParams.delete('category');
+        }
+        window.history.pushState({}, '', url);
+
+        fetchProducts();
+      }
+    });
+
+    document.getElementById('sortSelect').addEventListener('change', (e) => {
+      currentSort = e.target.value;
+      currentPage = 1;
+      fetchProducts();
+    });
+
+    const scrollTop = document.getElementById('scrollTop');
+    if (scrollTop) {
+      window.addEventListener('scroll', () => {
+        scrollTop.classList.toggle('visible', window.pageYOffset > 300);
+      });
+      scrollTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
     }
-  }
 
-  if (e.target.closest('.fav')) {
-    e.preventDefault();
-    const btn = e.target.closest('.fav');
-    btn.classList.toggle('active');
-    btn.innerHTML = btn.classList.contains('active') ? '♥' : '♡';
-  }
-});
-
-document.addEventListener('click', (e) => {
-  const categoryLink = e.target.closest('#categoryList a[data-category]');
-  if (categoryLink) {
-    e.preventDefault();
-
-    document.querySelectorAll('#categoryList a').forEach(l => l.classList.remove('active'));
-    categoryLink.classList.add('active');
-
-    const category = categoryLink.dataset.category;
-    currentCategory = (category === 'all') ? null : category;
-    currentPage = 1;
-
-    const url = new URL(window.location);
-    if (currentCategory) {
-      url.searchParams.set('category', currentCategory);
-    } else {
-      url.searchParams.delete('category');
-    }
-    window.history.pushState({}, '', url);
-
+    loadCategories();
     fetchProducts();
-  }
-});
-
-document.getElementById('sortSelect').addEventListener('change', (e) => {
-  currentSort = e.target.value;
-  currentPage = 1;
-  fetchProducts();
-});
-
-const scrollTop = document.getElementById('scrollTop');
-if (scrollTop) {
-  window.addEventListener('scroll', () => {
-    scrollTop.classList.toggle('visible', window.pageYOffset > 300);
-  });
-  scrollTop.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-}
-
-loadCategories();
-fetchProducts();
-</script>
+  </script>
 </body>
+
 </html>
