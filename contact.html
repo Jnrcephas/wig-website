@@ -841,13 +841,22 @@
   </footer>
 
   <script type="module">
-    import { createHeader, initializeHeader } from './src/components/header.js';
+    // Use absolute path from root instead of relative
+    import { createHeader, initializeHeader } from '/src/components/header.js';
+    import { store } from '/src/main.js';
+    import { addToCart } from '/src/store/slices/cartSlice.js';
 
-    // Insert header
-    document.getElementById('header-placeholder').innerHTML = createHeader();
+    // Insert header FIRST
+    const headerPlaceholder = document.getElementById('header-placeholder');
+    if (headerPlaceholder) {
+      headerPlaceholder.innerHTML = createHeader();
 
-    // Initialize header functionality
-    initializeHeader();
+      // Then initialize - wrapped in setTimeout to ensure DOM is ready
+      setTimeout(() => {
+        initializeHeader();
+      }, 0);
+    }
+
     // Contact form submission
     const contactForm = document.getElementById('contactForm');
     const submitBtn = document.getElementById('submitBtn');

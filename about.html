@@ -538,8 +538,8 @@
     <div class="container footer-grid">
       <div>
         <strong>Natishlux</strong>
-        <p style="margin-top:8px;color:var(--muted)">Ready-to-wear wigs & premium bundles. Email: 
-            href="mailto:Natishlux@gmail.com" style="text-decoration:underline">Natishlux@gmail.com</a></p>
+        <p style="margin-top:8px;color:var(--muted)">Ready-to-wear wigs & premium bundles. Email:
+          href="mailto:Natishlux@gmail.com" style="text-decoration:underline">Natishlux@gmail.com</a></p>
         <nav style="margin-top:16px;color:var(--muted)">
           <a href="about.html" style="margin-right:12px">About</a>
           <a href="contact.html" style="margin-right:12px">Contact</a>
@@ -564,13 +564,21 @@
   </footer>
 
   <script type="module">
-    import { createHeader, initializeHeader } from './src/components/header.js';
+    // Use absolute path from root instead of relative
+    import { createHeader, initializeHeader } from '/src/components/header.js';
+    import { store } from '/src/main.js';
+    import { addToCart } from '/src/store/slices/cartSlice.js';
 
-    // Insert header
-    document.getElementById('header-placeholder').innerHTML = createHeader();
+    // Insert header FIRST
+    const headerPlaceholder = document.getElementById('header-placeholder');
+    if (headerPlaceholder) {
+      headerPlaceholder.innerHTML = createHeader();
 
-    // Initialize header functionality
-    initializeHeader();
+      // Then initialize - wrapped in setTimeout to ensure DOM is ready
+      setTimeout(() => {
+        initializeHeader();
+      }, 0);
+    }
 
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {

@@ -4,18 +4,18 @@ export function createHeader() {
   return `
     <header>
       <div class="container nav" role="navigation" aria-label="Main">
-        <a class="logo" href="index.html">Natishlux</a>
+        <a class="logo" href="/index.html">Natishlux</a>
 
         <nav class="nav-links" id="navLinks" aria-label="Top">
-          <a href="index.html">Home</a>
-          <a href="shop.html">Shop</a>
-          <a href="about.html">About</a>
-          <a href="contact.html">Contact</a>
+          <a href="/index.html">Home</a>
+          <a href="/shop.html">Shop</a>
+          <a href="/about.html">About</a>
+          <a href="/contact.html">Contact</a>
         </nav>
 
         <div class="nav-right">
           <button class="icon-btn" aria-label="Search" id="openSearch">🔍</button>
-          <a class="icon-btn" href="cart.html" aria-label="Cart" id="cartIcon" style="position:relative">
+          <a class="icon-btn" href="/cart.html" aria-label="Cart" id="cartIcon" style="position:relative">
             🛒
             <span class="cart-count" id="cartCount" style="display:none">0</span>
           </a>
@@ -28,16 +28,17 @@ export function createHeader() {
   `;
 }
 
-// Initialize header functionality
 export function initializeHeader() {
   const menuToggle = document.getElementById('menuToggle');
   const navLinks = document.getElementById('navLinks');
   const body = document.body;
   
   if (!menuToggle || !navLinks) {
-    console.warn('Header elements not found');
+    console.error('Header elements not found - DOM may not be ready');
     return;
   }
+  
+  console.log('Header initialized successfully'); // Debug log
   
   // Toggle menu
   menuToggle.addEventListener('click', (e) => {
@@ -46,7 +47,6 @@ export function initializeHeader() {
     menuToggle.setAttribute('aria-expanded', isActive);
     menuToggle.textContent = isActive ? '✕' : '☰';
     
-    // Prevent body scroll when menu is open (mobile only)
     if (window.innerWidth <= 900) {
       body.style.overflow = isActive ? 'hidden' : '';
     }
@@ -94,14 +94,12 @@ export function initializeHeader() {
   updateCartCount();
 }
 
-// Update cart count badge
 function updateCartCount() {
-  // This will be called by the store subscription in each page
   const cartCountEl = document.getElementById('cartCount');
   if (!cartCountEl) return;
 
-  // Import store dynamically to avoid circular dependencies
-  import('../main.js').then(({ store }) => {
+  // Use absolute path
+  import('/src/main.js').then(({ store }) => {
     const updateCount = () => {
       const state = store.getState();
       const totalItems = state.cart.items.reduce((sum, item) => sum + item.quantity, 0);
@@ -114,10 +112,9 @@ function updateCartCount() {
       }
     };
 
-    // Initial update
     updateCount();
-
-    // Subscribe to store changes
     store.subscribe(updateCount);
+  }).catch(err => {
+    console.error('Failed to load store:', err);
   });
 }

@@ -180,7 +180,7 @@
       .nav {
         position: relative;
         padding: 16px 0;
-       margin-top: 20px;
+        margin-top: 20px;
         margin-bottom: 20px;
       }
 
@@ -608,16 +608,21 @@
   <div class="toast" id="toast"></div>
 
   <script type="module">
-    import { store } from './src/main.js';
-    import { addToCart } from './src/store/slices/cartSlice.js';
-    import { productAPI, categoryAPI } from './src/services/apiMethods.js';
-    import { createHeader, initializeHeader } from './src/components/header.js';
+    // Use absolute path from root instead of relative
+    import { createHeader, initializeHeader } from '/src/components/header.js';
+    import { store } from '/src/main.js';
+    import { addToCart } from '/src/store/slices/cartSlice.js';
 
-    // Insert header
-    document.getElementById('header-placeholder').innerHTML = createHeader();
+    // Insert header FIRST
+    const headerPlaceholder = document.getElementById('header-placeholder');
+    if (headerPlaceholder) {
+      headerPlaceholder.innerHTML = createHeader();
 
-    // Initialize header functionality - CRITICAL: Call this after inserting HTML
-    initializeHeader();
+      // Then initialize - wrapped in setTimeout to ensure DOM is ready
+      setTimeout(() => {
+        initializeHeader();
+      }, 0);
+    }
 
     let featuredProducts = [];
 
