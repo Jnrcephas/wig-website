@@ -414,7 +414,30 @@
 </head>
 
 <body>
-  <div id="header-placeholder"></div>
+  <!-- HEADER -->
+  <header>
+    <div class="container nav" role="navigation" aria-label="Main">
+      <a class="logo" href="index.html">Natishlux</a>
+
+      <nav class="nav-links" id="navLinks" aria-label="Top">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+
+      <div class="nav-right">
+        <button class="icon-btn" aria-label="Search" id="openSearch">🔍</button>
+        <a class="icon-btn" href="cart.html" aria-label="Cart" id="cartIcon" style="position:relative">
+          🛒
+          <span class="cart-count" id="cartCount" style="display:none">0</span>
+        </a>
+        <button class="icon-btn menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="navLinks">
+          ☰
+        </button>
+      </div>
+    </div>
+  </header>
 
   <main>
     <!-- Page Header -->
@@ -538,8 +561,9 @@
     <div class="container footer-grid">
       <div>
         <strong>Natishlux</strong>
-        <p style="margin-top:8px;color:var(--muted)">Ready-to-wear wigs & premium bundles. Email:
-          href="mailto:Natishlux@gmail.com" style="text-decoration:underline">Natishlux@gmail.com</a></p>
+        <p style="margin-top:8px;color:var(--muted)">Ready-to-wear wigs & premium bundles. Email: 
+          <a href="mailto:Natishlux@gmail.com" style="text-decoration:underline">Natishlux@gmail.com</a>
+        </p>
         <nav style="margin-top:16px;color:var(--muted)">
           <a href="about.html" style="margin-right:12px">About</a>
           <a href="contact.html" style="margin-right:12px">Contact</a>
@@ -564,21 +588,81 @@
   </footer>
 
   <script type="module">
-    // Use absolute path from root instead of relative
-    import { createHeader, initializeHeader } from '/src/components/header.js';
-    import { store } from '/src/main.js';
-    import { addToCart } from '/src/store/slices/cartSlice.js';
+    import { store } from './src/main.js';
 
-    // Insert header FIRST
-    const headerPlaceholder = document.getElementById('header-placeholder');
-    if (headerPlaceholder) {
-      headerPlaceholder.innerHTML = createHeader();
+    // ===== HEADER FUNCTIONALITY =====
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    const body = document.body;
 
-      // Then initialize - wrapped in setTimeout to ensure DOM is ready
-      setTimeout(() => {
-        initializeHeader();
-      }, 0);
+    // Toggle menu
+    menuToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isActive = navLinks.classList.toggle('active');
+      menuToggle.setAttribute('aria-expanded', isActive);
+      menuToggle.textContent = isActive ? '✕' : '☰';
+
+      if (window.innerWidth <= 900) {
+        body.style.overflow = isActive ? 'hidden' : '';
+      }
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (navLinks.classList.contains('active') &&
+        !navLinks.contains(e.target) &&
+        !menuToggle.contains(e.target)) {
+        navLinks.classList.remove('active');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.textContent = '☰';
+        body.style.overflow = '';
+      }
+    });
+
+    // Close menu when clicking a link
+    navLinks.querySelectorAll('a').forEach(item => {
+      item.addEventListener('click', () => {
+        if (window.innerWidth <= 900) {
+          navLinks.classList.remove('active');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          menuToggle.textContent = '☰';
+          body.style.overflow = '';
+        }
+      });
+    });
+
+    // Handle window resize
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (window.innerWidth > 900) {
+          navLinks.classList.remove('active');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          menuToggle.textContent = '☰';
+          body.style.overflow = '';
+        }
+      }, 250);
+    });
+
+    // Update cart count
+    function updateCartCount() {
+      const cartCountEl = document.getElementById('cartCount');
+      if (!cartCountEl) return;
+
+      const state = store.getState();
+      const totalItems = state.cart.items.reduce((sum, item) => sum + item.quantity, 0);
+
+      if (totalItems > 0) {
+        cartCountEl.textContent = totalItems;
+        cartCountEl.style.display = 'block';
+      } else {
+        cartCountEl.style.display = 'none';
+      }
     }
+
+    updateCartCount();
+    store.subscribe(updateCartCount);
 
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
