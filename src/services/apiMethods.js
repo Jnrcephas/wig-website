@@ -38,9 +38,11 @@ export const productAPI = {
 export const orderAPI = {
   getAll: (params) => api.get('/api/orders/', { params }),
   getById: (id) => api.get(`/api/orders/${id}`),
-  getByNumber: (orderNumber) => api.get(`/api/orders/${orderNumber}`),
+  getByNumber: (orderNumber) => api.get(`/api/orders/number/${orderNumber}`),
   getStats: () => api.get('/api/orders/stats'),
-  updateStatus: (orderNumber, data) => api.patch(`/api/orders/${orderNumber}/status`, data),
+  updateStatus: (orderNumber, data) => api.patch(`/api/orders/number/${orderNumber}/status`, data),
+  updateById: (id, data) => api.patch(`/api/orders/${id}`, data), // Added this method
+  update: (id, data) => api.put(`/api/orders/${id}`, data), // Alternative update method
 };
 
 // Payments (Stripe Checkout)
