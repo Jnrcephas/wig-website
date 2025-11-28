@@ -34,6 +34,15 @@ export const productAPI = {
   delete: (id) => api.delete(`/api/products/${id}`)
 };
 
+// Orders
+export const orderAPI = {
+  getAll: (params) => api.get('/api/orders/', { params }),
+  getById: (id) => api.get(`/api/orders/${id}`),
+  getByNumber: (orderNumber) => api.get(`/api/orders/${orderNumber}`),
+  getStats: () => api.get('/api/orders/stats'),
+  updateStatus: (orderNumber, data) => api.patch(`/api/orders/${orderNumber}/status`, data),
+};
+
 // Payments (Stripe Checkout)
 export const paymentAPI = {
   createCheckout: (data) => api.post('/api/payments/checkout', data),

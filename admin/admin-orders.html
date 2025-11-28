@@ -1,15 +1,18 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Management - Natishlux Admin</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Orders — Natishlux Admin</title>
+
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;600;700&display=swap" rel="stylesheet">
-  
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
   <style>
     :root {
-      --bg: #fff;
+      --bg: #f8f9fa;
       --text: #111;
       --muted: #666;
       --accent: #000;
@@ -18,188 +21,423 @@
       --warning: #f39c12;
       --danger: #e74c3c;
       --info: #3498db;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: "Jost", system-ui, -apple-system, sans-serif;
-      color: var(--text);
-      background: #f5f5f5;
-      line-height: 1.6;
-    }
-    
-    /* Header */
-    .admin-header {
-      background: #fff;
-      border-bottom: 1px solid #e0e0e0;
-      padding: 16px 24px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    .admin-header h1 {
-      margin: 0;
-      font-size: 24px;
-      color: var(--gold);
-    }
-    .admin-nav {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-    }
-    .admin-nav a {
-      color: var(--text);
-      text-decoration: none;
-      padding: 8px 16px;
-      border-radius: 6px;
-      transition: background 0.2s;
-    }
-    .admin-nav a:hover {
-      background: #f5f5f5;
-    }
-    .admin-nav a.active {
-      background: var(--gold);
-      color: #fff;
+      --sidebar-width: 260px;
+      --header-height: 70px;
     }
 
-    /* Container */
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 24px;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Jost", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: var(--sidebar-width);
+      background: white;
+      border-right: 1px solid #e0e0e0;
+      padding: 24px 0;
+      z-index: 100;
+      transition: transform 0.3s;
+    }
+
+    .sidebar.mobile-hidden {
+      transform: translateX(-100%);
+    }
+
+    .sidebar-logo {
+      padding: 0 24px 24px;
+      border-bottom: 1px solid #e0e0e0;
+      margin-bottom: 24px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .logo-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-section {
+      padding: 0 16px;
+      margin-bottom: 24px;
+    }
+
+    .nav-section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 0 8px 8px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      color: var(--text);
+      text-decoration: none;
+      transition: background 0.2s;
+      margin-bottom: 4px;
+    }
+
+    .nav-item:hover {
+      background: #f5f5f5;
+    }
+
+    .nav-item.active {
+      background: var(--gold);
+      color: white;
+    }
+
+    .nav-icon {
+      font-size: 20px;
+    }
+
+    /* Header */
+    .header {
+      position: fixed;
+      left: var(--sidebar-width);
+      right: 0;
+      top: 0;
+      height: var(--header-height);
+      background: white;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 90;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .header-title {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: #f5f5f5;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--gold);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 8px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      min-width: 200px;
+      display: none;
+      z-index: 1000;
+      border: 1px solid #e0e0e0;
+    }
+
+    .dropdown-menu.show {
+      display: block;
+    }
+
+    .dropdown-item {
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dropdown-item:hover {
+      background: #f5f5f5;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: var(--sidebar-width);
+      margin-top: var(--header-height);
+      padding: 32px;
+      min-height: calc(100vh - var(--header-height));
     }
 
     /* Stats Cards */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 20px;
+      gap: 24px;
       margin-bottom: 32px;
     }
+
     .stat-card {
-      background: #fff;
-      padding: 24px;
+      background: white;
       border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e0e0e0;
     }
-    .stat-label {
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 8px;
+
+    .stat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
     }
+
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .stat-icon.blue {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+
+    .stat-icon.green {
+      background: #e8f5e9;
+      color: #388e3c;
+    }
+
+    .stat-icon.orange {
+      background: #fff3e0;
+      color: #f57c00;
+    }
+
+    .stat-icon.purple {
+      background: #f3e5f5;
+      color: #7b1fa2;
+    }
+
     .stat-value {
       font-size: 32px;
       font-weight: 700;
-      color: var(--accent);
+      margin-bottom: 4px;
     }
-    .stat-card.success .stat-value { color: var(--success); }
-    .stat-card.warning .stat-value { color: var(--warning); }
-    .stat-card.danger .stat-value { color: var(--danger); }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* Section */
+    .section {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e0e0e0;
+      margin-bottom: 24px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+    }
 
     /* Filters */
     .filters {
-      background: #fff;
+      background: white;
       padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e0e0e0;
       margin-bottom: 24px;
       display: flex;
       gap: 16px;
       flex-wrap: wrap;
-      align-items: center;
+      align-items: flex-end;
     }
+
     .filter-group {
       display: flex;
       flex-direction: column;
       gap: 6px;
+      min-width: 200px;
     }
+
     .filter-group label {
       font-size: 13px;
       font-weight: 600;
       color: var(--muted);
     }
+
     .filter-group select,
     .filter-group input {
-      padding: 8px 12px;
-      border: 2px solid #e0e0e0;
-      border-radius: 6px;
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
       font-family: inherit;
       font-size: 14px;
+      transition: border-color 0.2s;
     }
+
+    .filter-group select:focus,
+    .filter-group input:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    /* Buttons */
     .btn {
       padding: 10px 20px;
+      background: var(--accent);
+      color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: transform 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
       font-family: inherit;
     }
+
+    .btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     .btn-primary {
       background: var(--gold);
-      color: #fff;
     }
-    .btn-primary:hover {
-      opacity: 0.9;
-    }
+
     .btn-secondary {
       background: #f5f5f5;
       color: var(--accent);
     }
-    .btn-secondary:hover {
-      background: #e8e8e8;
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 13px;
+    }
+
+    .btn-success {
+      background: var(--success);
+    }
+
+    .btn-info {
+      background: var(--info);
     }
 
     /* Orders Table */
-    .orders-section {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      overflow: hidden;
-    }
-    .orders-header {
-      padding: 20px 24px;
-      border-bottom: 1px solid #e0e0e0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .orders-header h2 {
-      margin: 0;
-      font-size: 20px;
-    }
-    .orders-table {
+    .table {
       width: 100%;
       border-collapse: collapse;
     }
-    .orders-table th {
+
+    .table th {
       text-align: left;
-      padding: 16px 24px;
+      padding: 12px;
       background: #f9f9f9;
       font-weight: 600;
       font-size: 14px;
       color: var(--muted);
       border-bottom: 2px solid #e0e0e0;
     }
-    .orders-table td {
-      padding: 16px 24px;
+
+    .table td {
+      padding: 16px 12px;
       border-bottom: 1px solid #f0f0f0;
     }
-    .orders-table tr:hover {
+
+    .table tr:hover {
       background: #fafafa;
     }
+
     .order-number {
       font-weight: 600;
       color: var(--gold);
       cursor: pointer;
+      text-decoration: none;
     }
+
     .order-number:hover {
       text-decoration: underline;
     }
-    
+
     /* Status Badges */
-    .status-badge {
+    .badge {
       display: inline-block;
       padding: 4px 12px;
       border-radius: 12px;
@@ -207,23 +445,28 @@
       font-weight: 600;
       text-transform: capitalize;
     }
-    .status-badge.pending {
+
+    .badge.pending {
       background: #fff3cd;
       color: #856404;
     }
-    .status-badge.processing {
+
+    .badge.processing {
       background: #cfe2ff;
       color: #084298;
     }
-    .status-badge.shipped {
+
+    .badge.shipped {
       background: #d1e7dd;
       color: #0f5132;
     }
-    .status-badge.delivered {
+
+    .badge.delivered {
       background: #d1e7dd;
       color: #0a3622;
     }
-    .status-badge.cancelled {
+
+    .badge.cancelled {
       background: #f8d7da;
       color: #842029;
     }
@@ -233,101 +476,89 @@
       display: flex;
       gap: 8px;
     }
-    .action-btn {
-      padding: 6px 12px;
-      font-size: 13px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.2s;
-    }
-    .action-btn.view {
-      background: var(--info);
-      color: #fff;
-    }
-    .action-btn.update {
-      background: var(--success);
-      color: #fff;
-    }
-    .action-btn:hover {
-      opacity: 0.9;
-      transform: translateY(-1px);
-    }
 
     /* Modal */
     .modal {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.6);
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
       z-index: 1000;
       align-items: center;
       justify-content: center;
       padding: 20px;
     }
+
     .modal.show {
       display: flex;
     }
+
     .modal-content {
-      background: #fff;
+      background: white;
       border-radius: 12px;
       max-width: 700px;
       width: 100%;
       max-height: 90vh;
       overflow-y: auto;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     }
+
     .modal-header {
-      padding: 24px;
+      padding: 20px 24px;
       border-bottom: 1px solid #e0e0e0;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .modal-header h3 {
-      margin: 0;
+
+    .modal-title {
       font-size: 20px;
+      font-weight: 700;
     }
-    .modal-close {
+
+    .close-btn {
       background: none;
       border: none;
-      font-size: 28px;
+      font-size: 24px;
       cursor: pointer;
       color: var(--muted);
-      padding: 0;
       width: 32px;
       height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 4px;
+      border-radius: 6px;
+      transition: background 0.2s;
     }
-    .modal-close:hover {
+
+    .close-btn:hover {
       background: #f5f5f5;
     }
+
     .modal-body {
       padding: 24px;
     }
+
     .detail-row {
       display: grid;
       grid-template-columns: 140px 1fr;
       padding: 12px 0;
       border-bottom: 1px solid #f0f0f0;
     }
+
     .detail-row:last-child {
       border-bottom: none;
     }
+
     .detail-label {
       font-weight: 600;
       color: var(--muted);
     }
+
     .order-items {
       margin-top: 20px;
     }
+
     .order-item {
       display: flex;
       gap: 16px;
@@ -336,29 +567,68 @@
       border-radius: 8px;
       margin-bottom: 12px;
     }
+
     .item-image {
       width: 60px;
       height: 60px;
       object-fit: cover;
       border-radius: 6px;
     }
+
     .item-details {
       flex: 1;
     }
+
     .item-name {
       font-weight: 600;
       margin-bottom: 4px;
     }
+
     .item-price {
       color: var(--gold);
       font-weight: 600;
     }
 
+    /* Form Controls */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 15px;
+      transition: border-color 0.2s;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 100px;
+    }
+
     /* Loading & Empty States */
-    .loading, .empty {
+    .loading,
+    .empty {
       text-align: center;
       padding: 60px 20px;
+      color: var(--muted);
     }
+
     .spinner {
       width: 40px;
       height: 40px;
@@ -368,9 +638,15 @@
       animation: spin 1s linear infinite;
       margin: 0 auto 16px;
     }
+
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
     }
 
     /* Pagination */
@@ -380,23 +656,29 @@
       gap: 8px;
       padding: 24px;
     }
+
     .pagination button {
       padding: 8px 16px;
-      border: 2px solid #e0e0e0;
-      background: #fff;
-      border-radius: 6px;
+      border: 1px solid #e0e0e0;
+      background: white;
+      border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
+      font-family: inherit;
+      transition: all 0.2s;
     }
+
     .pagination button:hover:not(:disabled) {
       border-color: var(--gold);
       color: var(--gold);
     }
+
     .pagination button.active {
       background: var(--gold);
-      color: #fff;
+      color: white;
       border-color: var(--gold);
     }
+
     .pagination button:disabled {
       opacity: 0.4;
       cursor: not-allowed;
@@ -408,51 +690,222 @@
       bottom: 24px;
       right: 24px;
       background: #333;
-      color: #fff;
+      color: white;
       padding: 16px 24px;
       border-radius: 8px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
       transform: translateY(100px);
       opacity: 0;
-      transition: all 0.3s;
+      transition: transform 0.3s, opacity 0.3s;
       z-index: 2000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
+
     .toast.show {
       transform: translateY(0);
       opacity: 1;
     }
-    .toast.success { background: var(--success); }
-    .toast.error { background: var(--danger); }
+
+    .toast.success {
+      background: var(--success);
+    }
+
+    .toast.error {
+      background: var(--danger);
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 1024px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.mobile-visible {
+        transform: translateX(0);
+      }
+
+      .header {
+        left: 0;
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+
+      .filters {
+        flex-direction: column;
+      }
+
+      .filter-group {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .main-content {
+        padding: 16px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .table {
+        font-size: 14px;
+      }
+
+      .table th,
+      .table td {
+        padding: 8px;
+      }
+
+      .action-btns {
+        flex-direction: column;
+      }
+    }
+
+    .mobile-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 99;
+    }
+
+    .mobile-overlay.show {
+      display: block;
+    }
   </style>
 </head>
+
 <body>
-  <header class="admin-header">
-    <h1>🛍️ Natishlux Admin</h1>
-    <nav class="admin-nav">
-      <a href="admin.html">Products</a>
-      <a href="admin-orders.html" class="active">Orders</a>
-      <a href="index.html">← Back to Store</a>
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo">Natishlux</div>
+      <div class="logo-subtitle">
+        <i class="ri-shield-keyhole-line"></i>
+        Admin Portal
+      </div>
+    </div>
+
+    <nav>
+      <div class="nav-section">
+        <div class="nav-section-title">Main</div>
+        <a href="admin-dashboard.html" class="nav-item">
+          <i class="nav-icon ri-dashboard-line"></i>
+          <span>Dashboard</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Management</div>
+        <a href="admin-categories.html" class="nav-item">
+          <i class="nav-icon ri-folder-line"></i>
+          <span>Categories</span>
+        </a>
+        <a href="admin-products.html" class="nav-item">
+          <i class="nav-icon ri-shopping-bag-line"></i>
+          <span>Products</span>
+        </a>
+        <a href="admin-orders.html" class="nav-item active">
+          <i class="nav-icon ri-file-list-3-line"></i>
+          <span>Orders</span>
+        </a>
+      </div>
     </nav>
+  </aside>
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-left">
+      <button class="menu-toggle" id="menuToggle">
+        <i class="ri-menu-line"></i>
+      </button>
+      <h1 class="header-title">Orders</h1>
+    </div>
+
+    <div class="header-right">
+      <div class="user-menu" id="userMenu">
+        <div class="user-avatar" id="userAvatar">A</div>
+        <div>
+          <div style="font-weight: 600; font-size: 14px;" id="userName">Admin</div>
+        </div>
+        <i class="ri-arrow-down-s-line"></i>
+
+        <div class="dropdown-menu" id="dropdownMenu">
+          <div class="dropdown-item" id="logoutBtn">
+            <i class="ri-logout-box-line"></i>
+            <span>Logout</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </header>
 
-  <div class="container">
+  <!-- Main Content -->
+  <main class="main-content">
     <!-- Stats Cards -->
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-label">Total Orders</div>
-        <div class="stat-value" id="totalOrders">0</div>
+        <div class="stat-header">
+          <div>
+            <div class="stat-value" id="totalOrders">0</div>
+            <div class="stat-label">Total Orders</div>
+          </div>
+          <div class="stat-icon blue">
+            <i class="ri-file-list-3-line"></i>
+          </div>
+        </div>
       </div>
-      <div class="stat-card warning">
-        <div class="stat-label">Pending Orders</div>
-        <div class="stat-value" id="pendingOrders">0</div>
-      </div>
-      <div class="stat-card success">
-        <div class="stat-label">Total Revenue</div>
-        <div class="stat-value" id="totalRevenue">$0</div>
-      </div>
+
       <div class="stat-card">
-        <div class="stat-label">Avg Order Value</div>
-        <div class="stat-value" id="avgOrderValue">$0</div>
+        <div class="stat-header">
+          <div>
+            <div class="stat-value" id="pendingOrders">0</div>
+            <div class="stat-label">Pending Orders</div>
+          </div>
+          <div class="stat-icon orange">
+            <i class="ri-time-line"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div>
+            <div class="stat-value" id="totalRevenue">$0</div>
+            <div class="stat-label">Total Revenue</div>
+          </div>
+          <div class="stat-icon green">
+            <i class="ri-money-dollar-circle-line"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div>
+            <div class="stat-value" id="avgOrderValue">$0</div>
+            <div class="stat-label">Avg Order Value</div>
+          </div>
+          <div class="stat-icon purple">
+            <i class="ri-bar-chart-line"></i>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -475,21 +928,27 @@
         <input type="text" id="searchInput" placeholder="Order number, email...">
       </div>
 
-      <div class="filter-group" style="margin-top:auto">
+      <div class="filter-group">
         <label>&nbsp;</label>
-        <button class="btn btn-primary" id="applyFilters">Apply Filters</button>
+        <button class="btn btn-primary" id="applyFilters">
+          <i class="ri-search-line"></i>
+          Apply Filters
+        </button>
       </div>
 
-      <div class="filter-group" style="margin-left:auto; margin-top:auto">
+      <div class="filter-group" style="margin-left: auto;">
         <label>&nbsp;</label>
-        <button class="btn btn-secondary" id="refreshBtn">🔄 Refresh</button>
+        <button class="btn btn-secondary" id="refreshBtn">
+          <i class="ri-refresh-line"></i>
+          Refresh
+        </button>
       </div>
     </div>
 
-    <!-- Orders Table -->
-    <div class="orders-section">
-      <div class="orders-header">
-        <h2>Recent Orders</h2>
+    <!-- Orders Section -->
+    <div class="section">
+      <div class="section-header">
+        <h2 class="section-title">All Orders</h2>
         <span id="orderCount">0 orders</span>
       </div>
 
@@ -498,38 +957,42 @@
         <p>Loading orders...</p>
       </div>
 
-      <div id="emptyState" class="empty" style="display:none">
-        <p style="font-size:48px;margin:0 0 16px">📦</p>
+      <div id="emptyState" class="empty" style="display: none;">
+        <i class="ri-inbox-line" style="font-size: 48px; color: #ddd; margin-bottom: 16px;"></i>
         <h3>No Orders Found</h3>
         <p>No orders match your filters</p>
       </div>
 
-      <table class="orders-table" id="ordersTable" style="display:none">
-        <thead>
-          <tr>
-            <th>Order #</th>
-            <th>Customer</th>
-            <th>Date</th>
-            <th>Items</th>
-            <th>Total</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="ordersTableBody">
-        </tbody>
-      </table>
+      <div style="overflow-x: auto;">
+        <table class="table" id="ordersTable" style="display: none;">
+          <thead>
+            <tr>
+              <th>Order #</th>
+              <th>Customer</th>
+              <th>Date</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTableBody">
+          </tbody>
+        </table>
+      </div>
 
       <div class="pagination" id="pagination"></div>
     </div>
-  </div>
+  </main>
 
   <!-- Order Details Modal -->
   <div class="modal" id="orderModal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 id="modalOrderNumber">Order Details</h3>
-        <button class="modal-close" onclick="closeModal()">×</button>
+        <h3 class="modal-title" id="modalOrderNumber">Order Details</h3>
+        <button class="close-btn" onclick="closeModal()">
+          <i class="ri-close-line"></i>
+        </button>
       </div>
       <div class="modal-body" id="modalBody">
         <!-- Order details will be loaded here -->
@@ -541,13 +1004,15 @@
   <div class="modal" id="updateModal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>Update Order Status</h3>
-        <button class="modal-close" onclick="closeUpdateModal()">×</button>
+        <h3 class="modal-title">Update Order Status</h3>
+        <button class="close-btn" onclick="closeUpdateModal()">
+          <i class="ri-close-line"></i>
+        </button>
       </div>
       <div class="modal-body">
-        <div style="margin-bottom:20px">
-          <label style="display:block;margin-bottom:8px;font-weight:600">New Status</label>
-          <select id="newStatus" style="width:100%;padding:10px;border:2px solid #e0e0e0;border-radius:6px;font-family:inherit">
+        <div class="form-group">
+          <label>New Status</label>
+          <select id="newStatus" class="form-control">
             <option value="pending">Pending</option>
             <option value="processing">Processing</option>
             <option value="shipped">Shipped</option>
@@ -556,19 +1021,31 @@
           </select>
         </div>
 
-        <div style="margin-bottom:20px">
-          <label style="display:block;margin-bottom:8px;font-weight:600">Tracking Number (optional)</label>
-          <input type="text" id="trackingNumber" placeholder="Enter tracking number" style="width:100%;padding:10px;border:2px solid #e0e0e0;border-radius:6px;font-family:inherit">
+        <div class="form-group">
+          <label>Tracking Number (optional)</label>
+          <input type="text" id="trackingNumber" class="form-control" placeholder="Enter tracking number">
         </div>
 
-        <div style="margin-bottom:20px">
-          <label style="display:block;margin-bottom:8px;font-weight:600">Notes (optional)</label>
-          <textarea id="orderNotes" rows="3" placeholder="Add notes about this update" style="width:100%;padding:10px;border:2px solid #e0e0e0;border-radius:6px;font-family:inherit;resize:vertical"></textarea>
+        <div class="form-group">
+          <label>Notes (optional)</label>
+          <textarea id="orderNotes" class="form-control" placeholder="Add notes about this update"></textarea>
         </div>
 
-        <div style="display:flex;gap:12px">
-          <button class="btn btn-secondary" onclick="closeUpdateModal()" style="flex:1">Cancel</button>
-          <button class="btn btn-primary" id="updateStatusBtn" style="flex:1">Update Status</button>
+        <div style="display: flex; gap: 12px; justify-content: flex-end;">
+          <button class="btn btn-secondary" onclick="closeUpdateModal()">
+            <i class="ri-close-line"></i>
+            Cancel
+          </button>
+          <button class="btn btn-primary" id="updateStatusBtn">
+            <span id="updateBtnText">
+              <i class="ri-check-line"></i>
+              Update Status
+            </span>
+            <span id="updateBtnSpinner" style="display: none;">
+              <i class="ri-loader-4-line"></i>
+              Updating...
+            </span>
+          </button>
         </div>
       </div>
     </div>
@@ -577,7 +1054,57 @@
   <div class="toast" id="toast"></div>
 
   <script type="module">
-    import { orderAPI } from './src/services/apiMethods.js';
+    import { orderAPI } from '../src/services/apiMethods.js';
+
+    // Check authentication
+    const token = localStorage.getItem('adminAccessToken');
+    if (!token) {
+      window.location.href = 'admin-login.html';
+    }
+
+    // Set user info
+    const adminUser = JSON.parse(localStorage.getItem('adminUser') || '{}');
+    if (adminUser.name) {
+      document.getElementById('userName').textContent = adminUser.name;
+      document.getElementById('userAvatar').textContent = adminUser.name.charAt(0).toUpperCase();
+    }
+
+    // Sidebar toggle
+    const sidebar = document.getElementById('sidebar');
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileOverlay = document.getElementById('mobileOverlay');
+
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('mobile-visible');
+      mobileOverlay.classList.toggle('show');
+    });
+
+    mobileOverlay.addEventListener('click', () => {
+      sidebar.classList.remove('mobile-visible');
+      mobileOverlay.classList.remove('show');
+    });
+    // User menu dropdown
+    const userMenu = document.getElementById('userMenu');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+
+    userMenu.addEventListener('click', (e) => {
+      if (e.target.closest('.dropdown-menu')) return;
+      dropdownMenu.classList.toggle('show');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!userMenu.contains(e.target)) {
+        dropdownMenu.classList.remove('show');
+      }
+    });
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('adminAccessToken');
+      localStorage.removeItem('adminRefreshToken');
+      localStorage.removeItem('adminUser');
+      window.location.href = 'admin-login.html';
+    });
 
     // State
     let currentPage = 1;
@@ -593,7 +1120,7 @@
         document.getElementById('totalOrders').textContent = stats.totalOrders || 0;
         document.getElementById('pendingOrders').textContent = stats.ordersByStatus?.pending || 0;
         document.getElementById('totalRevenue').textContent = '$' + (stats.totalRevenue || 0).toFixed(2);
-        
+
         const avgValue = stats.totalOrders > 0 ? stats.totalRevenue / stats.totalOrders : 0;
         document.getElementById('avgOrderValue').textContent = '$' + avgValue.toFixed(2);
       } catch (error) {
@@ -646,24 +1173,30 @@
       orders.forEach(order => {
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td>
-            <span class="order-number" onclick="viewOrder('${order.orderNumber}')">${order.orderNumber}</span>
-          </td>
-          <td>
-            <div style="font-weight:600">${order.customerInfo.firstName} ${order.customerInfo.lastName}</div>
-            <div style="font-size:13px;color:var(--muted)">${order.customerInfo.email}</div>
-          </td>
-          <td>${new Date(order.createdAt).toLocaleDateString()}</td>
-          <td>${order.items.length} item${order.items.length !== 1 ? 's' : ''}</td>
-          <td style="font-weight:700;color:var(--gold)">$${order.pricing.total.toFixed(2)}</td>
-          <td><span class="status-badge ${order.status}">${order.status}</span></td>
-          <td>
-            <div class="action-btns">
-              <button class="action-btn view" onclick="viewOrder('${order.orderNumber}')">View</button>
-              <button class="action-btn update" onclick="openUpdateModal('${order.orderNumber}', '${order.status}')">Update</button>
-            </div>
-          </td>
-        `;
+      <td>
+        <a href="#" class="order-number" onclick="viewOrder('${order.orderNumber}'); return false;">${order.orderNumber}</a>
+      </td>
+      <td>
+        <div style="font-weight: 600;">${order.customerInfo.firstName} ${order.customerInfo.lastName}</div>
+        <div style="font-size: 13px; color: var(--muted);">${order.customerInfo.email}</div>
+      </td>
+      <td>${new Date(order.createdAt).toLocaleDateString()}</td>
+      <td>${order.items.length} item${order.items.length !== 1 ? 's' : ''}</td>
+      <td style="font-weight: 700; color: var(--gold);">$${order.pricing.total.toFixed(2)}</td>
+      <td><span class="badge ${order.status}">${order.status}</span></td>
+      <td>
+        <div class="action-btns">
+          <button class="btn btn-sm btn-info" onclick="viewOrder('${order.orderNumber}')">
+            <i class="ri-eye-line"></i>
+            View
+          </button>
+          <button class="btn btn-sm btn-success" onclick="openUpdateModal('${order.orderNumber}', '${order.status}')">
+            <i class="ri-pencil-line"></i>
+            Update
+          </button>
+        </div>
+      </td>
+    `;
         tbody.appendChild(row);
       });
     }
@@ -677,7 +1210,7 @@
 
       // Previous
       const prevBtn = document.createElement('button');
-      prevBtn.textContent = '← Prev';
+      prevBtn.innerHTML = '<i class="ri-arrow-left-line"></i> Prev';
       prevBtn.disabled = pagination.page === 1;
       prevBtn.onclick = () => {
         currentPage--;
@@ -699,7 +1232,7 @@
 
       // Next
       const nextBtn = document.createElement('button');
-      nextBtn.textContent = 'Next →';
+      nextBtn.innerHTML = 'Next <i class="ri-arrow-right-line"></i>';
       nextBtn.disabled = pagination.page === pagination.pages;
       nextBtn.onclick = () => {
         currentPage++;
@@ -709,77 +1242,77 @@
     }
 
     // View order details
-    window.viewOrder = async function(orderNumber) {
+    window.viewOrder = async function (orderNumber) {
       try {
         const response = await orderAPI.getByNumber(orderNumber);
         const order = response.data.data;
 
         document.getElementById('modalOrderNumber').textContent = `Order ${order.orderNumber}`;
-        
+
         const modalBody = document.getElementById('modalBody');
         modalBody.innerHTML = `
-          <div class="detail-row">
-            <div class="detail-label">Status</div>
-            <div><span class="status-badge ${order.status}">${order.status}</span></div>
-          </div>
-          <div class="detail-row">
-            <div class="detail-label">Order Date</div>
-            <div>${new Date(order.createdAt).toLocaleString()}</div>
-          </div>
-          <div class="detail-row">
-            <div class="detail-label">Customer</div>
-            <div>
-              ${order.customerInfo.firstName} ${order.customerInfo.lastName}<br>
-              ${order.customerInfo.email}<br>
-              ${order.customerInfo.phone}
+      <div class="detail-row">
+        <div class="detail-label">Status</div>
+        <div><span class="badge ${order.status}">${order.status}</span></div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Order Date</div>
+        <div>${new Date(order.createdAt).toLocaleString()}</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Customer</div>
+        <div>
+          ${order.customerInfo.firstName} ${order.customerInfo.lastName}<br>
+          ${order.customerInfo.email}<br>
+          ${order.customerInfo.phone}
+        </div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Shipping Address</div>
+        <div>
+          ${order.shippingAddress.street}<br>
+          ${order.shippingAddress.city}, ${order.shippingAddress.state} ${order.shippingAddress.zipCode}<br>
+          ${order.shippingAddress.country}
+        </div>
+      </div>
+      ${order.trackingNumber ? `
+      <div class="detail-row">
+        <div class="detail-label">Tracking Number</div>
+        <div><strong>${order.trackingNumber}</strong></div>
+      </div>
+      ` : ''}
+      
+      <div class="order-items">
+        <h4 style="margin-bottom: 12px;">Order Items</h4>
+        ${order.items.map(item => `
+          <div class="order-item">
+            <img src="${item.image}" alt="${item.name}" class="item-image">
+            <div class="item-details">
+              <div class="item-name">${item.name}</div>
+              <div style="font-size: 14px; color: var(--muted);">Qty: ${item.quantity}</div>
             </div>
+            <div class="item-price">$${(item.price * item.quantity).toFixed(2)}</div>
           </div>
-          <div class="detail-row">
-            <div class="detail-label">Shipping Address</div>
-            <div>
-              ${order.shippingAddress.street}<br>
-              ${order.shippingAddress.city}, ${order.shippingAddress.state} ${order.shippingAddress.zipCode}<br>
-              ${order.shippingAddress.country}
-            </div>
-          </div>
-          ${order.trackingNumber ? `
-          <div class="detail-row">
-            <div class="detail-label">Tracking Number</div>
-            <div><strong>${order.trackingNumber}</strong></div>
-          </div>
-          ` : ''}
-          
-          <div class="order-items">
-            <h4>Order Items</h4>
-            ${order.items.map(item => `
-              <div class="order-item">
-                <img src="${item.image}" alt="${item.name}" class="item-image">
-                <div class="item-details">
-                  <div class="item-name">${item.name}</div>
-                  <div style="font-size:14px;color:var(--muted)">Qty: ${item.quantity}</div>
-                </div>
-                <div class="item-price">$${(item.price * item.quantity).toFixed(2)}</div>
-              </div>
-            `).join('')}
-          </div>
+        `).join('')}
+      </div>
 
-          <div class="detail-row" style="margin-top:20px;padding-top:20px;border-top:2px solid #e0e0e0">
-            <div class="detail-label">Subtotal</div>
-            <div>$${order.pricing.subtotal.toFixed(2)}</div>
-          </div>
-          <div class="detail-row">
-            <div class="detail-label">Shipping</div>
-            <div>${order.pricing.shipping === 0 ? 'FREE' : '$' + order.pricing.shipping.toFixed(2)}</div>
-          </div>
-          <div class="detail-row">
-            <div class="detail-label">Tax</div>
-            <div>$${order.pricing.tax.toFixed(2)}</div>
-          </div>
-          <div class="detail-row" style="font-size:18px;font-weight:700;color:var(--gold)">
-            <div class="detail-label">Total</div>
-            <div>$${order.pricing.total.toFixed(2)}</div>
-          </div>
-        `;
+      <div class="detail-row" style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+        <div class="detail-label">Subtotal</div>
+        <div>$${order.pricing.subtotal.toFixed(2)}</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Shipping</div>
+        <div>${order.pricing.shipping === 0 ? 'FREE' : '$' + order.pricing.shipping.toFixed(2)}</div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-label">Tax</div>
+        <div>$${order.pricing.tax.toFixed(2)}</div>
+      </div>
+      <div class="detail-row" style="font-size: 18px; font-weight: 700; color: var(--gold);">
+        <div class="detail-label">Total</div>
+        <div>$${order.pricing.total.toFixed(2)}</div>
+      </div>
+    `;
 
         document.getElementById('orderModal').classList.add('show');
       } catch (error) {
@@ -789,7 +1322,7 @@
     };
 
     // Open update modal
-    window.openUpdateModal = function(orderNumber, currentStatus) {
+    window.openUpdateModal = function (orderNumber, currentStatus) {
       selectedOrderNumber = orderNumber;
       document.getElementById('newStatus').value = currentStatus;
       document.getElementById('trackingNumber').value = '';
@@ -798,11 +1331,11 @@
     };
 
     // Close modals
-    window.closeModal = function() {
+    window.closeModal = function () {
       document.getElementById('orderModal').classList.remove('show');
     };
 
-    window.closeUpdateModal = function() {
+    window.closeUpdateModal = function () {
       document.getElementById('updateModal').classList.remove('show');
       selectedOrderNumber = null;
     };
@@ -816,8 +1349,13 @@
       const notes = document.getElementById('orderNotes').value;
 
       try {
-        document.getElementById('updateStatusBtn').disabled = true;
-        document.getElementById('updateStatusBtn').textContent = 'Updating...';
+        const updateBtn = document.getElementById('updateStatusBtn');
+        const updateBtnText = document.getElementById('updateBtnText');
+        const updateBtnSpinner = document.getElementById('updateBtnSpinner');
+
+        updateBtn.disabled = true;
+        updateBtnText.style.display = 'none';
+        updateBtnSpinner.style.display = 'inline-flex';
 
         await orderAPI.updateStatus(selectedOrderNumber, {
           status: newStatus,
@@ -834,8 +1372,13 @@
         console.error('Failed to update order:', error);
         showToast(error.response?.data?.message || 'Failed to update order', 'error');
       } finally {
-        document.getElementById('updateStatusBtn').disabled = false;
-        document.getElementById('updateStatusBtn').textContent = 'Update Status';
+        const updateBtn = document.getElementById('updateStatusBtn');
+        const updateBtnText = document.getElementById('updateBtnText');
+        const updateBtnSpinner = document.getElementById('updateBtnSpinner');
+
+        updateBtn.disabled = false;
+        updateBtnText.style.display = 'inline-flex';
+        updateBtnSpinner.style.display = 'none';
       }
     });
 
@@ -865,7 +1408,8 @@
     // Toast
     function showToast(message, type = 'info') {
       const toast = document.getElementById('toast');
-      toast.textContent = message;
+      const icon = type === 'error' ? '<i class="ri-error-warning-line"></i>' : '<i class="ri-checkbox-circle-line"></i>';
+      toast.innerHTML = icon + message;
       toast.className = `toast ${type} show`;
       setTimeout(() => toast.classList.remove('show'), 3000);
     }
@@ -876,4 +1420,5 @@
     loadOrders();
   </script>
 </body>
+
 </html>
