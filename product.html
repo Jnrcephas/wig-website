@@ -543,6 +543,7 @@
     </div>
   </main>
   <div class="toast" id="toast"></div>
+  
   <script type="module">
     import { store } from './src/main.js';
     import { addToCart } from './src/store/slices/cartSlice.js';
@@ -651,9 +652,9 @@
 
     async function loadProduct() {
       try {
-        console.log('Fetching product:', productId);
+        // console.log('Fetching product:', productId);
         const response = await productAPI.getById(productId);
-        console.log('Product response:', response);
+        // console.log('Product response:', response);
         product = response.data.data;
 
         displayProduct(product);

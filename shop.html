@@ -869,7 +869,7 @@
         let response;
 
         if (currentCategory && currentCategory !== 'all') {
-          console.log('Fetching category:', currentCategory);
+          // console.log('Fetching category:', currentCategory);
           response = await productAPI.getByCategory(currentCategory, params);
         } else {
           console.log('Fetching all products');

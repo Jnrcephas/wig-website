@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://wig-ecommerce-backend.onrender.com/';
+const API_URL = import.meta.env.VITE_API_URL || 'http://api.natishlux.com/';
 
 console.log('API URL:', API_URL);
 
@@ -63,7 +63,7 @@ api.interceptors.response.use(
           throw new Error('No refresh token available');
         }
 
-        console.log('Attempting to refresh token...');
+        // console.log('Attempting to refresh token...');
 
         // Try to refresh the token
         const response = await axios.post(`${API_URL}/api/auth/refresh-token`, {
@@ -74,7 +74,7 @@ api.interceptors.response.use(
         
         // Store new access token
         localStorage.setItem(accessTokenKey, accessToken);
-        console.log('Token refreshed successfully');
+        // console.log('Token refreshed successfully');
 
         // Retry the original request with new token
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
@@ -93,7 +93,7 @@ api.interceptors.response.use(
           
           // Only redirect if not already on login page
           if (!window.location.pathname.includes('admin-login')) {
-            console.log('Redirecting to admin login...');
+            // console.log('Redirecting to admin login...');
             window.location.href = '/admin-login.html';
           }
         } else {

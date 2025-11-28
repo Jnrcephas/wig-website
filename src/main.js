@@ -25,4 +25,4 @@ store.subscribe(updateCartCount);
 // Initial update
 updateCartCount();
 
-console.log('Store initialized');
+// console.log('Store initialized');

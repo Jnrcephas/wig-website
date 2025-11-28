@@ -38,7 +38,7 @@ export function initializeHeader() {
     return;
   }
   
-  console.log('Header initialized successfully'); // Debug log
+  // console.log('Header initialized successfully'); // Debug log
   
   // Toggle menu
   menuToggle.addEventListener('click', (e) => {

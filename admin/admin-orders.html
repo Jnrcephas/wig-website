@@ -1109,22 +1109,28 @@
     // State
     let currentPage = 1;
     let currentFilters = {};
-    let selectedOrderNumber = null;
+    let selectedOrderId = null;
 
     // Load stats
     async function loadStats() {
       try {
         const response = await orderAPI.getStats();
-        const stats = response.data.data;
+        const stats = response.data.data || response.data;
 
+        // Handle both nested and flat response structures
         document.getElementById('totalOrders').textContent = stats.totalOrders || 0;
-        document.getElementById('pendingOrders').textContent = stats.ordersByStatus?.pending || 0;
-        document.getElementById('totalRevenue').textContent = '$' + (stats.totalRevenue || 0).toFixed(2);
+        document.getElementById('pendingOrders').textContent = (stats.ordersByStatus?.pending || stats.pendingOrders) || 0;
+        document.getElementById('totalRevenue').textContent = '$' + ((stats.totalRevenue || 0).toFixed(2));
 
-        const avgValue = stats.totalOrders > 0 ? stats.totalRevenue / stats.totalOrders : 0;
+        const avgValue = stats.totalOrders > 0 ? (stats.totalRevenue || 0) / stats.totalOrders : 0;
         document.getElementById('avgOrderValue').textContent = '$' + avgValue.toFixed(2);
       } catch (error) {
         console.error('Failed to load stats:', error);
+        // Set defaults on error
+        document.getElementById('totalOrders').textContent = '0';
+        document.getElementById('pendingOrders').textContent = '0';
+        document.getElementById('totalRevenue').textContent = '$0.00';
+        document.getElementById('avgOrderValue').textContent = '$0.00';
       }
     }
 
@@ -1142,7 +1148,30 @@
         };
 
         const response = await orderAPI.getAll(params);
-        const { data: orders, pagination } = response.data;
+
+        // Handle both response structures
+        let orders, pagination;
+
+        if (response.data.data && Array.isArray(response.data.data)) {
+          // New structure: { success, data: [...], message }
+          orders = response.data.data;
+
+          // Create pagination from the orders array
+          pagination = {
+            page: currentPage,
+            limit: 20,
+            total: orders.length,
+            pages: Math.ceil(orders.length / 20)
+          };
+        } else if (response.data.data && response.data.data.orders) {
+          // Expected structure: { data: { orders: [...], pagination: {...} } }
+          orders = response.data.data.orders;
+          pagination = response.data.data.pagination;
+        } else {
+          // Fallback
+          orders = [];
+          pagination = { page: 1, limit: 20, total: 0, pages: 0 };
+        }
 
         document.getElementById('loadingState').style.display = 'none';
 
@@ -1153,7 +1182,7 @@
         }
 
         document.getElementById('ordersTable').style.display = 'table';
-        document.getElementById('orderCount').textContent = `${pagination.total} orders`;
+        document.getElementById('orderCount').textContent = `${pagination.total || orders.length} orders`;
 
         renderOrders(orders);
         renderPagination(pagination);
@@ -1161,6 +1190,7 @@
       } catch (error) {
         console.error('Failed to load orders:', error);
         document.getElementById('loadingState').style.display = 'none';
+        document.getElementById('emptyState').style.display = 'block';
         showToast('Failed to load orders', 'error');
       }
     }
@@ -1171,29 +1201,37 @@
       tbody.innerHTML = '';
 
       orders.forEach(order => {
+        // Handle different field name structures
+        const customerInfo = order.customerInfo || order.customer;
+        const shippingAddr = order.shippingAddress;
+        const orderStatus = order.status || order.orderStatus;
+        const pricing = order.pricing || {
+          subtotal: order.subtotal,
+          shipping: order.shippingAmount,
+          tax: order.taxAmount,
+          total: order.total
+        };
+
         const row = document.createElement('tr');
         row.innerHTML = `
       <td>
-        <a href="#" class="order-number" onclick="viewOrder('${order.orderNumber}'); return false;">${order.orderNumber}</a>
+        <a href="#" class="order-number" onclick="viewOrder('${order.id}'); return false;">${order.orderNumber}</a>
       </td>
       <td>
-        <div style="font-weight: 600;">${order.customerInfo.firstName} ${order.customerInfo.lastName}</div>
-        <div style="font-size: 13px; color: var(--muted);">${order.customerInfo.email}</div>
+        <div style="font-weight: 600;">${customerInfo.firstName} ${customerInfo.lastName}</div>
+        <div style="font-size: 13px; color: var(--muted);">${customerInfo.email}</div>
       </td>
       <td>${new Date(order.createdAt).toLocaleDateString()}</td>
       <td>${order.items.length} item${order.items.length !== 1 ? 's' : ''}</td>
-      <td style="font-weight: 700; color: var(--gold);">$${order.pricing.total.toFixed(2)}</td>
-      <td><span class="badge ${order.status}">${order.status}</span></td>
+      <td style="font-weight: 700; color: var(--gold);">$${pricing.total.toFixed(2)}</td>
+      <td><span class="badge ${orderStatus}">${orderStatus}</span></td>
       <td>
         <div class="action-btns">
-          <button class="btn btn-sm btn-info" onclick="viewOrder('${order.orderNumber}')">
+          <button class="btn btn-sm btn-info" onclick="viewOrder('${order.id}')">
             <i class="ri-eye-line"></i>
             View
           </button>
-          <button class="btn btn-sm btn-success" onclick="openUpdateModal('${order.orderNumber}', '${order.status}')">
-            <i class="ri-pencil-line"></i>
-            Update
-          </button>
+        
         </div>
       </td>
     `;
@@ -1242,10 +1280,22 @@
     }
 
     // View order details
-    window.viewOrder = async function (orderNumber) {
+    window.viewOrder = async function (orderId) {
       try {
-        const response = await orderAPI.getByNumber(orderNumber);
-        const order = response.data.data;
+        // Use getById instead of getByNumber
+        const response = await orderAPI.getById(orderId);
+        const order = response.data.data || response.data;
+
+        // Handle different field structures
+        const customerInfo = order.customerInfo || order.customer;
+        const shippingAddr = order.shippingAddress;
+        const orderStatus = order.status || order.orderStatus;
+        const pricing = order.pricing || {
+          subtotal: order.subtotal,
+          shipping: order.shippingAmount,
+          tax: order.taxAmount,
+          total: order.total
+        };
 
         document.getElementById('modalOrderNumber').textContent = `Order ${order.orderNumber}`;
 
@@ -1253,7 +1303,7 @@
         modalBody.innerHTML = `
       <div class="detail-row">
         <div class="detail-label">Status</div>
-        <div><span class="badge ${order.status}">${order.status}</span></div>
+        <div><span class="badge ${orderStatus}">${orderStatus}</span></div>
       </div>
       <div class="detail-row">
         <div class="detail-label">Order Date</div>
@@ -1262,17 +1312,17 @@
       <div class="detail-row">
         <div class="detail-label">Customer</div>
         <div>
-          ${order.customerInfo.firstName} ${order.customerInfo.lastName}<br>
-          ${order.customerInfo.email}<br>
-          ${order.customerInfo.phone}
+          ${customerInfo.firstName} ${customerInfo.lastName}<br>
+          ${customerInfo.email}<br>
+          ${customerInfo.phone || 'N/A'}
         </div>
       </div>
       <div class="detail-row">
         <div class="detail-label">Shipping Address</div>
         <div>
-          ${order.shippingAddress.street}<br>
-          ${order.shippingAddress.city}, ${order.shippingAddress.state} ${order.shippingAddress.zipCode}<br>
-          ${order.shippingAddress.country}
+          ${shippingAddr.addressLine1}<br>
+          ${shippingAddr.city}, ${shippingAddr.state} ${shippingAddr.postalCode}<br>
+          ${shippingAddr.country}
         </div>
       </div>
       ${order.trackingNumber ? `
@@ -1286,31 +1336,31 @@
         <h4 style="margin-bottom: 12px;">Order Items</h4>
         ${order.items.map(item => `
           <div class="order-item">
-            <img src="${item.image}" alt="${item.name}" class="item-image">
+            <img src="${item.image || 'assets/img/placeholder.jpg'}" alt="${item.name}" class="item-image" onerror="this.src='assets/img/placeholder.jpg'">
             <div class="item-details">
               <div class="item-name">${item.name}</div>
               <div style="font-size: 14px; color: var(--muted);">Qty: ${item.quantity}</div>
             </div>
-            <div class="item-price">$${(item.price * item.quantity).toFixed(2)}</div>
+            <div class="item-price">$${((item.price || item.unitPrice) * item.quantity).toFixed(2)}</div>
           </div>
         `).join('')}
       </div>
 
       <div class="detail-row" style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
         <div class="detail-label">Subtotal</div>
-        <div>$${order.pricing.subtotal.toFixed(2)}</div>
+        <div>$${pricing.subtotal.toFixed(2)}</div>
       </div>
       <div class="detail-row">
         <div class="detail-label">Shipping</div>
-        <div>${order.pricing.shipping === 0 ? 'FREE' : '$' + order.pricing.shipping.toFixed(2)}</div>
+        <div>${pricing.shipping === 0 ? 'FREE' : '$' + pricing.shipping.toFixed(2)}</div>
       </div>
       <div class="detail-row">
         <div class="detail-label">Tax</div>
-        <div>$${order.pricing.tax.toFixed(2)}</div>
+        <div>$${pricing.tax.toFixed(2)}</div>
       </div>
       <div class="detail-row" style="font-size: 18px; font-weight: 700; color: var(--gold);">
         <div class="detail-label">Total</div>
-        <div>$${order.pricing.total.toFixed(2)}</div>
+        <div>$${pricing.total.toFixed(2)}</div>
       </div>
     `;
 
@@ -1322,8 +1372,8 @@
     };
 
     // Open update modal
-    window.openUpdateModal = function (orderNumber, currentStatus) {
-      selectedOrderNumber = orderNumber;
+    window.openUpdateModal = function (orderId, currentStatus) {
+      selectedOrderId = orderId;  // Changed from selectedOrderNumber
       document.getElementById('newStatus').value = currentStatus;
       document.getElementById('trackingNumber').value = '';
       document.getElementById('orderNotes').value = '';
@@ -1337,12 +1387,13 @@
 
     window.closeUpdateModal = function () {
       document.getElementById('updateModal').classList.remove('show');
-      selectedOrderNumber = null;
+      selectedOrderId = null;  // Changed from selectedOrderNumber
     };
 
     // Update order status
+    // Update order status
     document.getElementById('updateStatusBtn').addEventListener('click', async () => {
-      if (!selectedOrderNumber) return;
+      if (!selectedOrderId) return;
 
       const newStatus = document.getElementById('newStatus').value;
       const trackingNumber = document.getElementById('trackingNumber').value;
@@ -1357,8 +1408,10 @@
         updateBtnText.style.display = 'none';
         updateBtnSpinner.style.display = 'inline-flex';
 
-        await orderAPI.updateStatus(selectedOrderNumber, {
+        // Use updateById instead of updateStatus with orderNumber
+        await orderAPI.updateById(selectedOrderId, {
           status: newStatus,
+          orderStatus: newStatus,  // Send both for compatibility
           trackingNumber: trackingNumber || undefined,
           notes: notes || undefined
         });

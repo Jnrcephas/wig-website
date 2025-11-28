@@ -9,7 +9,7 @@ export function initializeHeader() {
   // Check if nav-right exists (not on all pages)
   const navRight = document.querySelector('.nav-right');
   if (!navRight) {
-    console.log('No nav-right element found on this page');
+    // console.log('No nav-right element found on this page');
     return;
   }
 

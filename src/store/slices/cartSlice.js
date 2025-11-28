@@ -35,17 +35,17 @@ const cartSlice = createSlice({
     addToCart: (state, action) => {
       const { product, quantity = 1 } = action.payload;
       
-      console.log('Adding to cart:', product.name, 'Quantity:', quantity);
-      console.log('Current cart items:', state.items.length);
+      // console.log('Adding to cart:', product.name, 'Quantity:', quantity);
+      // console.log('Current cart items:', state.items.length);
       
       // Find existing item by product ID
       const existingItem = state.items.find(item => item.product.id === product.id);
       
       if (existingItem) {
-        console.log('Item already exists, increasing quantity');
+        // console.log('Item already exists, increasing quantity');
         existingItem.quantity += quantity;
       } else {
-        console.log('New item, adding to cart');
+        // console.log('New item, adding to cart');
         state.items.push({
           product,
           quantity,
@@ -53,7 +53,7 @@ const cartSlice = createSlice({
         });
       }
       
-      console.log('Updated cart items:', state.items.length);
+      // console.log('Updated cart items:', state.items.length);
       saveCartToStorage(state.items);
     },
     

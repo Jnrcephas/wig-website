@@ -348,7 +348,7 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      console.log('=== LOGIN FORM SUBMITTED ===');
+      // console.log('=== LOGIN FORM SUBMITTED ===');
 
       // Validate
       let isValid = true;
@@ -372,7 +372,7 @@
       }
 
       if (!isValid) {
-        console.log('Validation failed');
+        // console.log('Validation failed');
         return;
       }
 
@@ -382,16 +382,16 @@
         btnText.style.display = 'none';
         btnLoading.style.display = 'inline';
 
-        console.log('1. Attempting login with:', email);
+        // console.log('1. Attempting login with:', email);
 
         // Attempt login
         const result = await store.dispatch(loginUser({ email, password })).unwrap();
 
-        console.log('2. Login successful, user:', result);
+        // console.log('2. Login successful, user:', result);
 
         // Check if token was saved
         const savedToken = localStorage.getItem('authToken');
-        console.log('3. Token saved:', savedToken ? 'Yes (' + savedToken.substring(0, 20) + '...)' : 'NO');
+        // console.log('3. Token saved:', savedToken ? 'Yes (' + savedToken.substring(0, 20) + '...)' : 'NO');
 
         if (!savedToken) {
           throw new Error('Token was not saved. Please try again.');
@@ -399,7 +399,7 @@
 
         // Show success message
         showAlert('Login successful! Redirecting...', 'success');
-        console.log('4. Showing success message');
+        // console.log('4. Showing success message');
 
         // Wait a moment
         await new Promise(resolve => setTimeout(resolve, 1000));
@@ -408,7 +408,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const returnUrl = urlParams.get('return') || 'account.html';
 
-        console.log('5. Redirecting to:', returnUrl);
+        // console.log('5. Redirecting to:', returnUrl);
 
         // Force redirect
         window.location.replace(returnUrl);
@@ -435,7 +435,7 @@
     // Check if already logged in
     const state = store.getState();
     if (state.user.isAuthenticated) {
-      console.log('Already logged in, redirecting...');
+      // console.log('Already logged in, redirecting...');
       const urlParams = new URLSearchParams(window.location.search);
       const returnUrl = urlParams.get('return') || 'account.html';
       window.location.replace(returnUrl);
