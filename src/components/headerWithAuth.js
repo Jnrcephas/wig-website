@@ -1,5 +1,5 @@
 import { store } from '../main.js';
-import { logout } from '../store/slices/userSlice.js';
+import { logoutUser } from '../store/slices/userSlice.js';
 
 export function initializeHeader() {
   const state = store.getState();
@@ -77,7 +77,7 @@ export function initializeHeader() {
     if (logoutBtn) {
       logoutBtn.addEventListener('click', () => {
         if (confirm('Are you sure you want to logout?')) {
-          store.dispatch(logout());
+          store.dispatch(logoutUser());
           window.location.href = 'index.html';
         }
       });

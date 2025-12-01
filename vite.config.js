@@ -18,11 +18,11 @@ export default defineConfig({
         account: path.resolve(__dirname, 'account.html'),
         about: path.resolve(__dirname, 'about.html'),
         contact: path.resolve(__dirname, 'contact.html'),
-        adminDashboard: path.resolve(__dirname, 'admin-dashboard.html'),
-        adminProducts: path.resolve(__dirname, 'admin-products.html'),
-        adminLogin: path.resolve(__dirname, 'admin-login.html'),
-        adminOrders: path.resolve(__dirname, 'admin-orders.html'),
-        adminCategories: path.resolve(__dirname, 'admin-categories.html')
+        adminDashboard: path.resolve(__dirname, 'admin/admin-dashboard.html'),
+        adminProducts: path.resolve(__dirname, 'admin/admin-products.html'),
+        adminLogin: path.resolve(__dirname, 'admin/admin-login.html'),
+        adminOrders: path.resolve(__dirname, 'admin/admin-orders.html'),
+        adminCategories: path.resolve(__dirname, 'admin/admin-categories.html')
 
       }
     }

@@ -335,7 +335,7 @@
 
   <script type="module">
     import { store } from './src/main.js';
-    import { logout } from './src/store/slices/userSlice.js';
+    import { logoutUser } from './src/store/slices/userSlice.js';
     import { orderAPI } from './src/services/apiMethods.js';
 
     // Check authentication
@@ -473,12 +473,12 @@
     // Logout
     document.getElementById('logoutBtn').addEventListener('click', () => {
       if (confirm('Are you sure you want to logout?')) {
-        store.dispatch(logout());
+        store.dispatch(logoutUser());
         window.location.href = 'index.html';
       }
     });
   </script>
-    <script src="./src/utils/mobile-menu.js"></script>
+    <script type="module" src="./src/utils/mobile-menu.js"></script>
 
 </body>
 </html>
