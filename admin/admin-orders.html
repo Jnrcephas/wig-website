@@ -1419,8 +1419,6 @@
       if (!selectedOrderId) return;
 
       const newStatus = document.getElementById('newStatus').value;
-      const trackingNumber = document.getElementById('trackingNumber').value;
-      const notes = document.getElementById('orderNotes').value;
 
       try {
         const updateBtn = document.getElementById('updateStatusBtn');
@@ -1431,12 +1429,9 @@
         updateBtnText.style.display = 'none';
         updateBtnSpinner.style.display = 'inline-flex';
 
-        // Use updateById instead of updateStatus with orderNumber
-        await orderAPI.updateById(selectedOrderId, {
-          status: newStatus,
-          orderStatus: newStatus,  // Send both for compatibility
-          trackingNumber: trackingNumber || undefined,
-          notes: notes || undefined
+        // Use the new updateStatus method with orderId
+        await orderAPI.updateStatus(selectedOrderId, {
+          status: newStatus
         });
 
         showToast('Order status updated successfully', 'success');
