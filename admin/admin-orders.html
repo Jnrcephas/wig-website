@@ -1114,16 +1114,36 @@
     // Load stats
     async function loadStats() {
       try {
-        const response = await orderAPI.getStats();
-        const stats = response.data.data || response.data;
+        // Get all orders to calculate stats manually
+        const response = await orderAPI.getAll({ limit: 1000 });
 
-        // Handle both nested and flat response structures
-        document.getElementById('totalOrders').textContent = stats.totalOrders || 0;
-        document.getElementById('pendingOrders').textContent = (stats.ordersByStatus?.pending || stats.pendingOrders) || 0;
-        document.getElementById('totalRevenue').textContent = '$' + ((stats.totalRevenue || 0).toFixed(2));
+        // Handle different response structures
+        let orders = [];
+        if (response.data.data && Array.isArray(response.data.data)) {
+          orders = response.data.data;
+        } else if (response.data.data && response.data.data.orders) {
+          orders = response.data.data.orders;
+        } else if (Array.isArray(response.data)) {
+          orders = response.data;
+        }
 
-        const avgValue = stats.totalOrders > 0 ? (stats.totalRevenue || 0) / stats.totalOrders : 0;
+        // Calculate stats from orders
+        const totalOrders = orders.length;
+        const pendingOrders = orders.filter(o => (o.status || o.orderStatus) === 'pending').length;
+
+        const totalRevenue = orders.reduce((sum, order) => {
+          const pricing = order.pricing || { total: order.total || 0 };
+          return sum + (pricing.total || 0);
+        }, 0);
+
+        const avgValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
+
+        // Update UI
+        document.getElementById('totalOrders').textContent = totalOrders;
+        document.getElementById('pendingOrders').textContent = pendingOrders;
+        document.getElementById('totalRevenue').textContent = '$' + totalRevenue.toFixed(2);
         document.getElementById('avgOrderValue').textContent = '$' + avgValue.toFixed(2);
+
       } catch (error) {
         console.error('Failed to load stats:', error);
         // Set defaults on error
